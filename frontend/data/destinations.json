@@ -1,304 +1,312 @@
 {
-    "destinations": [
-        {
-            "name": "Eiffel Tower",
-            "city": "Paris",
-            "country": "France",
-            "coordinates": [
-                48.8584,
-                2.2945
-            ],
-            "category": "landmark"
-        },
-        {
-            "name": "Taj Mahal",
-            "city": "Agra",
-            "country": "India",
-            "coordinates": [
-                27.1751,
-                78.0421
-            ],
-            "category": "landmark"
-        },
-        {
-            "name": "Great Wall of China",
-            "city": "Beijing",
-            "country": "China",
-            "coordinates": [
-                40.4319,
-                116.5704
-            ],
-            "category": "landmark"
-        },
-        {
-            "name": "Statue of Liberty",
-            "city": "New York City",
-            "country": "United States",
-            "coordinates": [
-                40.6892,
-                -74.0445
-            ],
-            "category": "landmark"
-        },
-        {
-            "name": "Machu Picchu",
-            "city": "Cusco",
-            "country": "Peru",
-            "coordinates": [
-                -13.1631,
-                -72.545
-            ],
-            "category": "historical site"
-        },
-        {
-            "name": "Christ the Redeemer",
-            "city": "Rio de Janeiro",
-            "country": "Brazil",
-            "coordinates": [
-                -22.9519,
-                -43.2105
-            ],
-            "category": "landmark"
-        },
-        {
-            "name": "Colosseum",
-            "city": "Rome",
-            "country": "Italy",
-            "coordinates": [
-                41.8902,
-                12.4922
-            ],
-            "category": "historical site"
-        },
-        {
-            "name": "Grand Canyon",
-            "city": "Arizona",
-            "country": "United States",
-            "coordinates": [
-                36.1069,
-                -112.1129
-            ],
-            "category": "natural wonder"
-        },
-        {
-            "name": "Santorini",
-            "city": "Santorini",
-            "country": "Greece",
-            "coordinates": [
-                36.3932,
-                25.4615
-            ],
-            "category": "island"
-        },
-        {
-            "name": "Sydney Opera House",
-            "city": "Sydney",
-            "country": "Australia",
-            "coordinates": [
-                -33.8568,
-                151.2153
-            ],
-            "category": "landmark"
-        },
-        {
-            "name": "Niagara Falls",
-            "city": "Niagara Falls",
-            "country": "Canada",
-            "coordinates": [
-                43.0962,
-                -79.0377
-            ],
-            "category": "natural wonder"
-        },
-        {
-            "name": "Banff National Park",
-            "city": "Banff",
-            "country": "Canada",
-            "coordinates": [
-                51.4968,
-                -115.9281
-            ],
-            "category": "national park"
-        },
-        {
-            "name": "Great Barrier Reef",
-            "city": "Queensland",
-            "country": "Australia",
-            "coordinates": [
-                -18.2871,
-                147.6992
-            ],
-            "category": "natural wonder"
-        },
-        {
-            "name": "Pyramids of Giza",
-            "city": "Giza",
-            "country": "Egypt",
-            "coordinates": [
-                29.9792,
-                31.1342
-            ],
-            "category": "historical site"
-        },
-        {
-            "name": "Angkor Wat",
-            "city": "Siem Reap",
-            "country": "Cambodia",
-            "coordinates": [
-                13.4125,
-                103.8669
-            ],
-            "category": "historical site"
-        },
-        {
-            "name": "Petra",
-            "city": "Wadi Musa",
-            "country": "Jordan",
-            "coordinates": [
-                30.3285,
-                35.4444
-            ],
-            "category": "historical site"
-        },
-        {
-            "name": "Stonehenge",
-            "city": "Wiltshire",
-            "country": "United Kingdom",
-            "coordinates": [
-                51.1789,
-                -1.8262
-            ],
-            "category": "historical site"
-        },
-        {
-            "name": "Mount Fuji",
-            "city": "Shizuoka",
-            "country": "Japan",
-            "coordinates": [
-                35.3606,
-                138.7274
-            ],
-            "category": "natural wonder"
-        },
-        {
-            "name": "Times Square",
-            "city": "New York City",
-            "country": "United States",
-            "coordinates": [
-                40.758,
-                -73.9855
-            ],
-            "category": "urban attraction"
-        },
-        {
-            "name": "Acropolis of Athens",
-            "city": "Athens",
-            "country": "Greece",
-            "coordinates": [
-                37.9715,
-                23.7267
-            ],
-            "category": "historical site"
-        },
-        {
-            "name": "Disneyland",
-            "city": "Anaheim",
-            "country": "United States",
-            "coordinates": [
-                33.8121,
-                -117.919
-            ],
-            "category": "theme park"
-        },
-        {
-            "name": "Burj Khalifa",
-            "city": "Dubai",
-            "country": "United Arab Emirates",
-            "coordinates": [
-                25.1972,
-                55.2744
-            ],
-            "category": "landmark"
-        },
-        {
-            "name": "Table Mountain",
-            "city": "Cape Town",
-            "country": "South Africa",
-            "coordinates": [
-                -33.9628,
-                18.4098
-            ],
-            "category": "natural wonder"
-        },
-        {
-            "name": "Golden Gate Bridge",
-            "city": "San Francisco",
-            "country": "United States",
-            "coordinates": [
-                37.8199,
-                -122.4783
-            ],
-            "category": "landmark"
-        },
-        {
-            "name": "Blue Lagoon",
-            "city": "Grindav\u00edk",
-            "country": "Iceland",
-            "coordinates": [
-                63.879,
-                -22.4467
-            ],
-            "category": "natural wonder"
-        },
-        {
-            "name": "Alhambra",
-            "city": "Granada",
-            "country": "Spain",
-            "coordinates": [
-                37.1761,
-                -3.5881
-            ],
-            "category": "historical site"
-        },
-        {
-            "name": "Chichen Itza",
-            "city": "Yucatan",
-            "country": "Mexico",
-            "coordinates": [
-                20.6843,
-                -88.5678
-            ],
-            "category": "historical site"
-        },
-        {
-            "name": "Victoria Falls",
-            "city": "Livingstone",
-            "country": "Zambia/Zimbabwe",
-            "coordinates": [
-                -17.9243,
-                25.8567
-            ],
-            "category": "natural wonder"
-        },
-        {
-            "name": "Hagia Sophia",
-            "city": "Istanbul",
-            "country": "Turkey",
-            "coordinates": [
-                41.0086,
-                28.9802
-            ],
-            "category": "landmark"
-        },
-        {
-            "name": "Louvre Museum",
-            "city": "Paris",
-            "country": "France",
-            "coordinates": [
-                48.8606,
-                2.3376
-            ],
-            "category": "museum"
-        }
-    ]
+  "destinations": [
+    {
+      "name": "Eiffel Tower",
+      "city": "Paris",
+      "country": "France",
+      "coordinates": [48.8584, 2.2945],
+      "category": "landmark"
+    },
+    {
+      "name": "Taj Mahal",
+      "city": "Agra",
+      "country": "India",
+      "coordinates": [27.1751, 78.0421],
+      "category": "landmark"
+    },
+    {
+      "name": "Great Wall of China",
+      "city": "Beijing",
+      "country": "China",
+      "coordinates": [40.4319, 116.5704],
+      "category": "landmark"
+    },
+    {
+      "name": "Colosseum",
+      "city": "Rome",
+      "country": "Italy",
+      "coordinates": [41.8902, 12.4922],
+      "category": "landmark"
+    },
+    {
+      "name": "Machu Picchu",
+      "city": "Cusco",
+      "country": "Peru",
+      "coordinates": [-13.1631, -72.545],
+      "category": "landmark"
+    },
+    {
+      "name": "Statue of Liberty",
+      "city": "New York",
+      "country": "USA",
+      "coordinates": [40.6892, -74.0445],
+      "category": "landmark"
+    },
+    {
+      "name": "Sydney Opera House",
+      "city": "Sydney",
+      "country": "Australia",
+      "coordinates": [-33.8568, 151.2153],
+      "category": "landmark"
+    },
+    {
+      "name": "Christ the Redeemer",
+      "city": "Rio de Janeiro",
+      "country": "Brazil",
+      "coordinates": [-22.9519, -43.2105],
+      "category": "landmark"
+    },
+    {
+      "name": "Pyramids of Giza",
+      "city": "Giza",
+      "country": "Egypt",
+      "coordinates": [29.9792, 31.1342],
+      "category": "landmark"
+    },
+    {
+      "name": "Mount Fuji",
+      "city": "Fujinomiya",
+      "country": "Japan",
+      "coordinates": [35.3606, 138.7274],
+      "category": "natural"
+    },
+    {
+      "name": "Santorini",
+      "city": "Santorini",
+      "country": "Greece",
+      "coordinates": [36.3932, 25.4615],
+      "category": "beach"
+    },
+    {
+      "name": "Niagara Falls",
+      "city": "Niagara Falls",
+      "country": "Canada/USA",
+      "coordinates": [43.0799, -79.0742],
+      "category": "natural"
+    },
+    {
+      "name": "Acropolis of Athens",
+      "city": "Athens",
+      "country": "Greece",
+      "coordinates": [37.9715, 23.7267],
+      "category": "landmark"
+    },
+    {
+      "name": "Burj Khalifa",
+      "city": "Dubai",
+      "country": "UAE",
+      "coordinates": [25.1972, 55.2744],
+      "category": "landmark"
+    },
+    {
+      "name": "Grand Canyon",
+      "city": "Grand Canyon Village",
+      "country": "USA",
+      "coordinates": [36.1069, -112.1129],
+      "category": "natural"
+    },
+    {
+      "name": "Stonehenge",
+      "city": "Salisbury",
+      "country": "England",
+      "coordinates": [51.1789, -1.8262],
+      "category": "landmark"
+    },
+    {
+      "name": "Sagrada Familia",
+      "city": "Barcelona",
+      "country": "Spain",
+      "coordinates": [41.4036, 2.1744],
+      "category": "landmark"
+    },
+    {
+      "name": "Palace of Versailles",
+      "city": "Versailles",
+      "country": "France",
+      "coordinates": [48.8049, 2.1204],
+      "category": "landmark"
+    },
+    {
+      "name": "Mount Everest",
+      "city": "Solukhumbu",
+      "country": "Nepal",
+      "coordinates": [27.9881, 86.925],
+      "category": "natural"
+    },
+    {
+      "name": "Kilimanjaro",
+      "city": "Kilimanjaro",
+      "country": "Tanzania",
+      "coordinates": [-3.0674, 37.3556],
+      "category": "natural"
+    },
+    {
+      "name": "Angkor Wat",
+      "city": "Siem Reap",
+      "country": "Cambodia",
+      "coordinates": [13.4125, 103.8667],
+      "category": "landmark"
+    },
+    {
+      "name": "Yellowstone National Park",
+      "city": "Yellowstone",
+      "country": "USA",
+      "coordinates": [44.428, -110.5885],
+      "category": "natural"
+    },
+    {
+      "name": "Alhambra",
+      "city": "Granada",
+      "country": "Spain",
+      "coordinates": [37.7695, -3.5909],
+      "category": "landmark"
+    },
+    {
+      "name": "Prague Castle",
+      "city": "Prague",
+      "country": "Czech Republic",
+      "coordinates": [50.0901, 14.4005],
+      "category": "landmark"
+    },
+    {
+      "name": "Galápagos Islands",
+      "city": "Galápagos",
+      "country": "Ecuador",
+      "coordinates": [-0.9538, -90.9656],
+      "category": "natural"
+    },
+    {
+      "name": "Pampas de la Sierra",
+      "city": "Argentina",
+      "country": "Argentina",
+      "coordinates": [-30.9371, -61.3631],
+      "category": "natural"
+    },
+    {
+      "name": "Mount Etna",
+      "city": "Catania",
+      "country": "Italy",
+      "coordinates": [37.751, 15.0042],
+      "category": "natural"
+    },
+    {
+      "name": "Zhangjiajie National Forest Park",
+      "city": "Zhangjiajie",
+      "country": "China",
+      "coordinates": [29.35, 110.52],
+      "category": "natural"
+    },
+    {
+      "name": "Dubai Mall",
+      "city": "Dubai",
+      "country": "UAE",
+      "coordinates": [25.1972, 55.2794],
+      "category": "shopping"
+    },
+    {
+      "name": "Louvre Museum",
+      "city": "Paris",
+      "country": "France",
+      "coordinates": [48.8606, 2.3376],
+      "category": "museum"
+    },
+    {
+      "name": "Pike Place Market",
+      "city": "Seattle",
+      "country": "USA",
+      "coordinates": [47.6097, -122.3426],
+      "category": "market"
+    },
+    {
+      "name": "The Great Barrier Reef",
+      "city": "Queensland",
+      "country": "Australia",
+      "coordinates": [-18.2871, 147.6992],
+      "category": "natural"
+    },
+    {
+      "name": "Salar de Uyuni",
+      "city": "Uyuni",
+      "country": "Bolivia",
+      "coordinates": [-20.1338, -66.9199],
+      "category": "natural"
+    },
+    {
+      "name": "Big Ben",
+      "city": "London",
+      "country": "England",
+      "coordinates": [51.5007, -0.1246],
+      "category": "landmark"
+    },
+    {
+      "name": "Mount Rainer",
+      "city": "Seattle",
+      "country": "USA",
+      "coordinates": [46.8523, -121.7603],
+      "category": "natural"
+    },
+    {
+      "name": "Burj Al Arab",
+      "city": "Dubai",
+      "country": "UAE",
+      "coordinates": [25.1413, 55.1853],
+      "category": "landmark"
+    },
+    {
+      "name": "Mount Zion",
+      "city": "Jerusalem",
+      "country": "Israel",
+      "coordinates": [31.7767, 35.2327],
+      "category": "historical"
+    },
+    {
+      "name": "The Parthenon",
+      "city": "Athens",
+      "country": "Greece",
+      "coordinates": [37.9715, 23.7267],
+      "category": "historical"
+    },
+    {
+      "name": "The Dead Sea",
+      "city": "Jordan",
+      "country": "Jordan",
+      "coordinates": [31.559, 35.4732],
+      "category": "natural"
+    },
+    {
+      "name": "Golden Gate Bridge",
+      "city": "San Francisco",
+      "country": "USA",
+      "coordinates": [37.8199, -122.4783],
+      "category": "landmark"
+    },
+    {
+      "name": "Mount Rushmore",
+      "city": "Keystone",
+      "country": "USA",
+      "coordinates": [43.8791, -103.4591],
+      "category": "landmark"
+    },
+    {
+      "name": "Sagrada Familia",
+      "city": "Barcelona",
+      "country": "Spain",
+      "coordinates": [41.4036, 2.1744],
+      "category": "landmark"
+    },
+    {
+      "name": "Cinque Terre",
+      "city": "Liguria",
+      "country": "Italy",
+      "coordinates": [44.1134, 9.671],
+      "category": "natural"
+    },
+    {
+      "name": "Mount Kilimanjaro",
+      "city": "Tanzania",
+      "country": "Tanzania",
+      "coordinates": [-3.0674, 37.3556],
+      "category": "natural"
+    }
+  ]
 }
