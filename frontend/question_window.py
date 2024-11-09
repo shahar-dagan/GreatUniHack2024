@@ -21,6 +21,7 @@ import mediapipe as mp
 import json
 from pathlib import Path
 import time
+from models import TravelHistory
 
 load_dotenv()
 
@@ -58,18 +59,20 @@ class QuestionGenerator:
             "Have you visited the {name} in {city}, {country}?",
         ]
 
+        self.current_destination = None
+
     def generate_question(self) -> tuple[str, tuple]:
         """Returns a tuple of (question_string, coordinates)"""
-        destination = random.choice(self.destinations)
+        self.current_destination = random.choice(self.destinations)
         template = random.choice(self.templates)
 
         question = template.format(
-            name=destination.name,
-            city=destination.city,
-            country=destination.country,
+            name=self.current_destination.name,
+            city=self.current_destination.city,
+            country=self.current_destination.country,
         )
 
-        return question, destination.coordinates
+        return question, self.current_destination.coordinates
 
 
 class QuestionWindow(QWidget):
@@ -78,12 +81,14 @@ class QuestionWindow(QWidget):
         self.setWindowTitle("Travel Questions")
         self.setGeometry(100, 100, 1000, 800)
 
-        # Initialize question generator
+        # Initialize question generator and travel history first
         self.question_generator = QuestionGenerator()
+        self.travel_history = TravelHistory()
+        self.current_destination = None  # Initialize current_destination
 
         # Create layouts
         main_layout = QVBoxLayout()
-        buttons_layout = QVBoxLayout()  # New vertical layout for buttons
+        buttons_layout = QVBoxLayout()
 
         # Create map view
         self.map_view = QWebEngineView()
@@ -167,19 +172,12 @@ class QuestionWindow(QWidget):
 
         self.setLayout(main_layout)
 
-        # Load initial question and map
+        # Load initial question AFTER all initialization
+        print("Initial question loading...")
         self.load_new_question()
-
-        # Initialize video capture in the background
-        self.cap = cv2.VideoCapture(0)
-
-        # Set up the timer for frame updates
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.update_frame)
-        self.timer.start(30)
-
-        # Set window background color
-        self.setStyleSheet("background-color: white;")
+        print(
+            f"Initial destination set to: {self.current_destination.name if self.current_destination else 'None'}"
+        )
 
         # Initialize MediaPipe Hands
         self.mp_hands = mp.solutions.hands
@@ -191,16 +189,35 @@ class QuestionWindow(QWidget):
         )
         self.mp_draw = mp.solutions.drawing_utils
 
-        # Add timing and state variables
-        self.detection_start_time = None
+        # Initialize camera
+        self.cap = cv2.VideoCapture(0)
+
+        # Set up timer for frame updates
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update_frame)
+        self.timer.start(30)  # 30ms = ~33fps
+
+        # Initialize tracking variables
         self.current_fingers = None
-        self.buffer_time = 0.5  # seconds
-        self.is_processing = True  # Flag to control detection
+        self.detection_start_time = None
+        self.buffer_time = 1.0  # 1 second buffer
+        self.is_processing = True
+
+        # Set window background color
+        self.setStyleSheet("background-color: white;")
 
     def load_new_question(self):
+        print("\nLoading new question...")
         question, coordinates = self.question_generator.generate_question()
+        self.current_destination = self.question_generator.current_destination
+        print(
+            f"Current destination updated to: {self.current_destination.name}"
+        )
+
         self.question_label.setText(question)
         self.update_map(coordinates)
+        self.is_processing = True
+        print("Question loaded and UI updated")
 
     def update_map(self, coordinates):
         html = f"""
@@ -288,73 +305,146 @@ class QuestionWindow(QWidget):
         if not self.is_processing:
             return
 
+        # Convert frame to RGB
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = self.hands.process(rgb_frame)
 
+        # Draw hand landmarks on frame for visual feedback
         if results.multi_hand_landmarks:
-            hand_landmarks = results.multi_hand_landmarks[0]
+            for hand_landmarks in results.multi_hand_landmarks:
+                self.mp_draw.draw_landmarks(
+                    frame, hand_landmarks, self.mp_hands.HAND_CONNECTIONS
+                )
 
-            # Count fingers logic remains the same
-            fingers = 0
+                # Count fingers
+                fingers = 0
 
-            # Special case for thumb
-            thumb_tip = hand_landmarks.landmark[4]
-            thumb_pip = hand_landmarks.landmark[3]
-            if thumb_tip.x < thumb_pip.x:
-                fingers += 1
+                # Thumb (special case)
+                thumb_tip = hand_landmarks.landmark[4].x
+                thumb_mcp = hand_landmarks.landmark[2].x
 
-            # Check other fingers
-            for tip_id, pip_id in [(8, 6), (12, 10), (16, 14), (20, 18)]:
-                if (
-                    hand_landmarks.landmark[tip_id].y
-                    < hand_landmarks.landmark[pip_id].y
-                ):
+                # For right hand
+                if thumb_tip < thumb_mcp:
                     fingers += 1
 
-            # If this is a new valid finger count (1, 2, or 3), start the timer
-            if fingers in [1, 2, 3]:
-                if self.current_fingers != fingers:
-                    self.current_fingers = fingers
-                    self.detection_start_time = time.time()
-                # If we've held the same gesture for 1 second
-                elif time.time() - self.detection_start_time >= 1.0:
-                    if fingers == 1:
-                        self.handle_yes_selection()
-                    elif fingers == 2:
-                        self.handle_no_selection()
-                    elif fingers == 3:
-                        self.handle_bucket_list_selection()
-                    # Reset for next detection
+                # Other fingers
+                finger_tips = [8, 12, 16, 20]  # Index, Middle, Ring, Pinky
+                finger_pips = [6, 10, 14, 18]  # Second joints
+
+                for tip, pip in zip(finger_tips, finger_pips):
+                    # If fingertip is higher than pip joint, finger is considered raised
+                    if (
+                        hand_landmarks.landmark[tip].y
+                        < hand_landmarks.landmark[pip].y
+                    ):
+                        fingers += 1
+
+                # Draw finger count on frame
+                cv2.putText(
+                    frame,
+                    f"Fingers: {fingers}",
+                    (10, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    1,
+                    (255, 0, 0),
+                    2,
+                )
+
+                # Process valid gestures
+                if fingers in [1, 2, 3]:
+                    if self.current_fingers != fingers:
+                        self.current_fingers = fingers
+                        self.detection_start_time = time.time()
+                        print(f"New gesture detected: {fingers} fingers")
+                    elif (
+                        time.time() - self.detection_start_time
+                        >= self.buffer_time
+                    ):
+                        print(f"Processing gesture: {fingers} fingers")
+                        print(
+                            f"Current destination: {self.current_destination.name if self.current_destination else 'None'}"
+                        )
+
+                        # Process the gesture
+                        if fingers == 1:
+                            self.handle_yes_selection()
+                        elif fingers == 2:
+                            self.handle_no_selection()
+                        elif fingers == 3:
+                            self.handle_bucket_list_selection()
+
+                        # Reset detection
+                        self.current_fingers = None
+                        self.detection_start_time = None
+                else:
+                    # Reset if invalid finger count
                     self.current_fingers = None
                     self.detection_start_time = None
-            else:
-                # Reset if invalid finger count
-                self.current_fingers = None
-                self.detection_start_time = None
         else:
             # Reset if no hand detected
             self.current_fingers = None
             self.detection_start_time = None
 
+        # Display the processed frame
+        cv2.imshow("Hand Tracking", frame)
+
     def handle_yes_selection(self):
-        print("YES selected - implement your logic here")
-        self.load_new_question()  # Get a new question
-        self.is_processing = True  # Re-enable processing for new question
+        print("\nHandling YES selection")
+        print(
+            f"Current destination before handling: {self.current_destination.name if self.current_destination else 'None'}"
+        )
+
+        if self.current_destination:
+            self.travel_history.save_response(self.current_destination, "yes")
+            print("Loading next question...")
+            self.load_new_question()
+            print(f"New destination set to: {self.current_destination.name}")
+        else:
+            print("ERROR: No current destination set!")
 
     def handle_no_selection(self):
-        print("NO selected - implement your logic here")
-        self.load_new_question()  # Get a new question
-        self.is_processing = True  # Re-enable processing for new question
+        print("\nHandling NO selection")
+        print(
+            f"Current destination before handling: {self.current_destination.name if self.current_destination else 'None'}"
+        )
+
+        if self.current_destination:
+            self.travel_history.save_response(self.current_destination, "no")
+            print("Loading next question...")
+            self.load_new_question()
+            print(f"New destination set to: {self.current_destination.name}")
+        else:
+            print("ERROR: No current destination set!")
 
     def handle_bucket_list_selection(self):
-        print("Bucket List selected - implement your logic here")
-        self.load_new_question()  # Get a new question
-        self.is_processing = True  # Re-enable processing for new question
+        print("\nHandling BUCKET LIST selection")
+        print(
+            f"Current destination before handling: {self.current_destination.name if self.current_destination else 'None'}"
+        )
+
+        if self.current_destination:
+            self.travel_history.save_response(
+                self.current_destination, "bucket_list"
+            )
+            print("Loading next question...")
+            self.load_new_question()
+            print(f"New destination set to: {self.current_destination.name}")
+        else:
+            print("ERROR: No current destination set!")
 
     def closeEvent(self, event):
         self.hands.close()  # Clean up MediaPipe resources
         self.cap.release()
         event.accept()
+
+    def keyPressEvent(self, event):
+        # For testing purposes
+        if event.key() == Qt.Key_1:
+            self.handle_yes_selection()
+        elif event.key() == Qt.Key_2:
+            self.handle_no_selection()
+        elif event.key() == Qt.Key_3:
+            self.handle_bucket_list_selection()
 
 
 if __name__ == "__main__":

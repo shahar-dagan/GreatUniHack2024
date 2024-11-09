@@ -1,0 +1,18 @@
+[
+  {
+    "destination_name": "Colosseum",
+    "city": "Rome",
+    "country": "Italy",
+    "coordinates": [41.8902, 12.4922],
+    "response": "no",
+    "timestamp": "2024-11-09T18:11:08.759568"
+  },
+  {
+    "destination_name": "Blue Lagoon",
+    "city": "Grindavík",
+    "country": "Iceland",
+    "coordinates": [63.879, -22.4467],
+    "response": "no",
+    "timestamp": "2024-11-09T18:11:26.805358"
+  }
+]
