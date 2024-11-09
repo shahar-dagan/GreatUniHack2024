@@ -11,28 +11,87 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QFont, QPainter, QColor
 from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtCore import QUrl
+from dataclasses import dataclass
+from typing import List, Dict
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
+
+
+@dataclass
+class TouristDestination:
+    name: str
+    city: str
+    country: str
+    coordinates: tuple  # (latitude, longitude)
+    category: str  # e.g., 'landmark', 'nature', 'museum', etc.
+
+
+class QuestionGenerator:
+    def __init__(self):
+        # Sample database of tourist destinations
+        self.destinations = [
+            TouristDestination(
+                name="Eiffel Tower",
+                city="Paris",
+                country="France",
+                coordinates=(48.8584, 2.2945),
+                category="landmark",
+            ),
+            TouristDestination(
+                name="Taj Mahal",
+                city="Agra",
+                country="India",
+                coordinates=(27.1751, 78.0421),
+                category="landmark",
+            ),
+            # Add more destinations...
+        ]
+
+        # Question templates
+        self.templates = [
+            "Have you visited the {name} in {city}, {country}?",
+            "Did you get a chance to see {name} when you were in {country}?",
+            "Have you experienced the beauty of {name}?",
+            "Is {name} on your bucket list?",
+            "Would you like to visit {name} in {city}?",
+        ]
+
+    def generate_question(self) -> tuple[str, tuple]:
+        """Returns a tuple of (question_string, coordinates)"""
+        destination = random.choice(self.destinations)
+        template = random.choice(self.templates)
+
+        question = template.format(
+            name=destination.name,
+            city=destination.city,
+            country=destination.country,
+        )
+
+        return question, destination.coordinates
 
 
 class QuestionWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Would You Rather")
-        self.setGeometry(100, 100, 800, 600)
+        self.setWindowTitle("Travel Questions")
+        self.setGeometry(100, 100, 1000, 800)
 
-        # List of sample questions
-        self.questions = [
-            "Would you rather be able to fly or be invisible?",
-            "Would you rather live in the ocean or on the moon?",
-            "Would you rather be a famous musician or a famous actor?",
-            "Would you rather have unlimited money or unlimited time?",
-            "Would you rather be able to talk to animals or speak all human languages?",
-        ]
+        # Initialize question generator
+        self.question_generator = QuestionGenerator()
 
-        # Create the main layout
-        layout = QVBoxLayout()
-
-        # Create top buttons layout
+        # Create layouts
+        main_layout = QVBoxLayout()
         top_layout = QHBoxLayout()
+
+        # Create map view
+        self.map_view = QWebEngineView()
+        self.map_view.setFixedHeight(400)
 
         # Create YES button (green)
         self.yes_button = QLabel("YES")
@@ -68,11 +127,6 @@ class QuestionWindow(QWidget):
         )
         self.no_button.setFixedSize(200, 100)
 
-        # Add buttons to top layout with spacing
-        top_layout.addWidget(self.yes_button)
-        top_layout.addStretch()
-        top_layout.addWidget(self.no_button)
-
         # Create and style the question label
         self.question_label = QLabel()
         self.question_label.setAlignment(Qt.AlignCenter)
@@ -105,17 +159,16 @@ class QuestionWindow(QWidget):
         )
         self.bucket_list_button.setFixedHeight(80)
 
-        # Add everything to main layout
-        layout.addLayout(top_layout)
-        layout.addStretch()
-        layout.addWidget(self.question_label)
-        layout.addStretch()
-        layout.addWidget(self.bucket_list_button)
+        # Add map and other elements to layout
+        main_layout.addLayout(top_layout)
+        main_layout.addWidget(self.map_view)
+        main_layout.addWidget(self.question_label)
+        main_layout.addWidget(self.bucket_list_button)
 
-        self.setLayout(layout)
+        self.setLayout(main_layout)
 
-        # Set a random question
-        self.set_random_question()
+        # Load initial question and map
+        self.load_new_question()
 
         # Initialize video capture in the background
         self.cap = cv2.VideoCapture(0)
@@ -128,9 +181,66 @@ class QuestionWindow(QWidget):
         # Set window background color
         self.setStyleSheet("background-color: white;")
 
-    def set_random_question(self):
-        random_question = random.choice(self.questions)
-        self.question_label.setText(random_question)
+    def load_new_question(self):
+        question, coordinates = self.question_generator.generate_question()
+        self.question_label.setText(question)
+        self.update_map(coordinates)
+
+    def update_map(self, coordinates):
+        html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                #map {{
+                    height: 100%;
+                    width: 100%;
+                    border-radius: 8px;
+                }}
+                html, body {{
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }}
+            </style>
+            <script>
+                let map;
+                
+                async function initMap() {{
+                    try {{
+                        const {{ Map }} = await google.maps.importLibrary("maps");
+                        const {{ AdvancedMarkerElement }} = await google.maps.importLibrary("marker");
+                        
+                        const location = {{ lat: {coordinates[0]}, lng: {coordinates[1]} }};
+                        
+                        map = new Map(document.getElementById("map"), {{
+                            zoom: 12,
+                            center: location,
+                            mapId: "DEMO_MAP_ID",
+                        }});
+                        
+                        const marker = new AdvancedMarkerElement({{
+                            map: map,
+                            position: location,
+                        }});
+                        
+                    }} catch (error) {{
+                        console.error("Error loading map:", error);
+                        document.getElementById("map").innerHTML = 
+                            "Error loading map. Please try again later.";
+                    }}
+                }}
+            </script>
+            <script async
+                src="https://maps.googleapis.com/maps/api/js?key={API_KEY}&callback=initMap">
+            </script>
+        </head>
+        <body>
+            <div id="map"></div>
+        </body>
+        </html>
+        """
+        self.map_view.setHtml(html)
 
     def update_frame(self):
         ret, frame = self.cap.read()
@@ -191,11 +301,11 @@ class QuestionWindow(QWidget):
 
     def handle_yes_selection(self):
         print("YES selected - implement your logic here")
-        self.set_random_question()  # Get a new question
+        self.load_new_question()  # Get a new question
 
     def handle_no_selection(self):
         print("NO selected - implement your logic here")
-        self.set_random_question()  # Get a new question
+        self.load_new_question()  # Get a new question
 
     def handle_bucket_list_selection(self):
         print("Bucket List selected - implement your logic here")
