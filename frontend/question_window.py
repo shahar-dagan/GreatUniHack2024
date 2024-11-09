@@ -17,6 +17,10 @@ from dataclasses import dataclass
 from typing import List, Dict
 import os
 from dotenv import load_dotenv
+import mediapipe as mp
+import json
+from pathlib import Path
+import time
 
 load_dotenv()
 
@@ -34,32 +38,24 @@ class TouristDestination:
 
 class QuestionGenerator:
     def __init__(self):
-        # Sample database of tourist destinations
-        self.destinations = [
-            TouristDestination(
-                name="Eiffel Tower",
-                city="Paris",
-                country="France",
-                coordinates=(48.8584, 2.2945),
-                category="landmark",
-            ),
-            TouristDestination(
-                name="Taj Mahal",
-                city="Agra",
-                country="India",
-                coordinates=(27.1751, 78.0421),
-                category="landmark",
-            ),
-            # Add more destinations...
-        ]
+        # Load destinations from JSON file
+        data_file = Path(__file__).parent / "data" / "destinations.json"
+        with open(data_file, "r") as f:
+            data = json.load(f)
+            self.destinations = [
+                TouristDestination(
+                    name=dest["name"],
+                    city=dest["city"],
+                    country=dest["country"],
+                    coordinates=tuple(dest["coordinates"]),
+                    category=dest["category"],
+                )
+                for dest in data["destinations"]
+            ]
 
         # Question templates
         self.templates = [
             "Have you visited the {name} in {city}, {country}?",
-            "Did you get a chance to see {name} when you were in {country}?",
-            "Have you experienced the beauty of {name}?",
-            "Is {name} on your bucket list?",
-            "Would you like to visit {name} in {city}?",
         ]
 
     def generate_question(self) -> tuple[str, tuple]:
@@ -87,7 +83,7 @@ class QuestionWindow(QWidget):
 
         # Create layouts
         main_layout = QVBoxLayout()
-        top_layout = QHBoxLayout()
+        buttons_layout = QVBoxLayout()  # New vertical layout for buttons
 
         # Create map view
         self.map_view = QWebEngineView()
@@ -108,7 +104,7 @@ class QuestionWindow(QWidget):
             }
         """
         )
-        self.yes_button.setFixedSize(200, 100)
+        self.yes_button.setFixedHeight(80)
 
         # Create NO button (red)
         self.no_button = QLabel("NO")
@@ -125,7 +121,7 @@ class QuestionWindow(QWidget):
             }
         """
         )
-        self.no_button.setFixedSize(200, 100)
+        self.no_button.setFixedHeight(80)
 
         # Create and style the question label
         self.question_label = QLabel()
@@ -159,11 +155,15 @@ class QuestionWindow(QWidget):
         )
         self.bucket_list_button.setFixedHeight(80)
 
-        # Add map and other elements to layout
-        main_layout.addLayout(top_layout)
+        # Add buttons to the vertical buttons layout
+        buttons_layout.addWidget(self.yes_button)
+        buttons_layout.addWidget(self.no_button)
+        buttons_layout.addWidget(self.bucket_list_button)
+
+        # Add elements to main layout
         main_layout.addWidget(self.map_view)
         main_layout.addWidget(self.question_label)
-        main_layout.addWidget(self.bucket_list_button)
+        main_layout.addLayout(buttons_layout)  # Add the buttons layout
 
         self.setLayout(main_layout)
 
@@ -180,6 +180,22 @@ class QuestionWindow(QWidget):
 
         # Set window background color
         self.setStyleSheet("background-color: white;")
+
+        # Initialize MediaPipe Hands
+        self.mp_hands = mp.solutions.hands
+        self.hands = self.mp_hands.Hands(
+            static_image_mode=False,
+            max_num_hands=1,
+            min_detection_confidence=0.7,
+            min_tracking_confidence=0.5,
+        )
+        self.mp_draw = mp.solutions.drawing_utils
+
+        # Add timing and state variables
+        self.detection_start_time = None
+        self.current_fingers = None
+        self.buffer_time = 0.5  # seconds
+        self.is_processing = True  # Flag to control detection
 
     def load_new_question(self):
         question, coordinates = self.question_generator.generate_question()
@@ -250,67 +266,93 @@ class QuestionWindow(QWidget):
         frame = cv2.flip(frame, 1)
         self.process_finger_tracking(frame)
 
+        # Add visual feedback about detection
+        if self.current_fingers is not None and self.is_processing:
+            remaining_time = max(
+                0, self.buffer_time - (time.time() - self.detection_start_time)
+            )
+            cv2.putText(
+                frame,
+                f"Detected {self.current_fingers} fingers... {remaining_time:.1f}s",
+                (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1,
+                (0, 255, 0),
+                2,
+            )
+
+        # Convert frame for display
+        # ... rest of your existing frame display code ...
+
     def process_finger_tracking(self, frame):
-        # Convert to HSV for color detection
-        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        if not self.is_processing:
+            return
 
-        # Define color range for detecting the finger
-        lower_skin = np.array([0, 20, 70], dtype=np.uint8)
-        upper_skin = np.array([20, 255, 255], dtype=np.uint8)
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = self.hands.process(rgb_frame)
 
-        # Create a mask for the skin color
-        mask = cv2.inRange(hsv, lower_skin, upper_skin)
+        if results.multi_hand_landmarks:
+            hand_landmarks = results.multi_hand_landmarks[0]
 
-        # Apply morphological operations
-        kernel = np.ones((5, 5), np.uint8)
-        mask = cv2.erode(mask, kernel, iterations=2)
-        mask = cv2.dilate(mask, kernel, iterations=2)
+            # Count fingers logic remains the same
+            fingers = 0
 
-        # Find contours
-        contours, _ = cv2.findContours(
-            mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE
-        )
+            # Special case for thumb
+            thumb_tip = hand_landmarks.landmark[4]
+            thumb_pip = hand_landmarks.landmark[3]
+            if thumb_tip.x < thumb_pip.x:
+                fingers += 1
 
-        if contours:
-            max_contour = max(contours, key=cv2.contourArea)
-            if cv2.contourArea(max_contour) > 1000:
-                x, y, w, h = cv2.boundingRect(max_contour)
-                finger_x = x + w // 2
-                finger_y = y + h // 2
-                self.detect_corner(finger_x, finger_y, frame)
+            # Check other fingers
+            for tip_id, pip_id in [(8, 6), (12, 10), (16, 14), (20, 18)]:
+                if (
+                    hand_landmarks.landmark[tip_id].y
+                    < hand_landmarks.landmark[pip_id].y
+                ):
+                    fingers += 1
 
-    def detect_corner(self, finger_x, finger_y, frame):
-        height, width, _ = frame.shape
-
-        # Define the regions for detection (matching the visible buttons)
-        regions = {
-            "yes": (0, 0, width // 4, height // 4),
-            "no": (3 * width // 4, 0, width, height // 4),
-            "bucket-list": (0, 3 * height // 4, width, height),
-        }
-
-        for region_name, (x1, y1, x2, y2) in regions.items():
-            if x1 <= finger_x <= x2 and y1 <= finger_y <= y2:
-                print(f"Selected: {region_name}")
-                if region_name == "yes":
-                    self.handle_yes_selection()
-                elif region_name == "no":
-                    self.handle_no_selection()
-                elif region_name == "bucket-list":
-                    self.handle_bucket_list_selection()
+            # If this is a new valid finger count (1, 2, or 3), start the timer
+            if fingers in [1, 2, 3]:
+                if self.current_fingers != fingers:
+                    self.current_fingers = fingers
+                    self.detection_start_time = time.time()
+                # If we've held the same gesture for 1 second
+                elif time.time() - self.detection_start_time >= 1.0:
+                    if fingers == 1:
+                        self.handle_yes_selection()
+                    elif fingers == 2:
+                        self.handle_no_selection()
+                    elif fingers == 3:
+                        self.handle_bucket_list_selection()
+                    # Reset for next detection
+                    self.current_fingers = None
+                    self.detection_start_time = None
+            else:
+                # Reset if invalid finger count
+                self.current_fingers = None
+                self.detection_start_time = None
+        else:
+            # Reset if no hand detected
+            self.current_fingers = None
+            self.detection_start_time = None
 
     def handle_yes_selection(self):
         print("YES selected - implement your logic here")
         self.load_new_question()  # Get a new question
+        self.is_processing = True  # Re-enable processing for new question
 
     def handle_no_selection(self):
         print("NO selected - implement your logic here")
         self.load_new_question()  # Get a new question
+        self.is_processing = True  # Re-enable processing for new question
 
     def handle_bucket_list_selection(self):
         print("Bucket List selected - implement your logic here")
+        self.load_new_question()  # Get a new question
+        self.is_processing = True  # Re-enable processing for new question
 
     def closeEvent(self, event):
+        self.hands.close()  # Clean up MediaPipe resources
         self.cap.release()
         event.accept()
 
