@@ -103,3 +103,15 @@ class TravelHistory:
                 print("File does not exist!")
         except Exception as e:
             print(f"Error verifying file: {str(e)}")
+
+    def get_response_count(self, response_type: str) -> int:
+        """
+        Count the number of responses of a specific type
+        Args:
+            response_type: The type of response to count ('yes', 'no', or 'bucket_list')
+        Returns:
+            int: The number of responses of the specified type
+        """
+        return len(
+            [r for r in self.responses if r.get("response") == response_type]
+        )
