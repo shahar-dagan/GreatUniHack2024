@@ -180,27 +180,24 @@ class FingerTrackingGame(QWidget):
         height, width, _ = frame.shape
 
         # Define dimensions for rectangles
-        top_rect_height = height // 3  # Height for top rectangles
-        top_rect_width = width // 3  # Width for top rectangles
+        top_rect_height = height // 4  # Height for top rectangles
+        top_rect_width = width // 4  # Width for top rectangles
         bottom_rect_height = height // 6  # Height for bottom rectangle
 
-        # Calculate padding for top rectangles (20% of width from edges)
-        padding = int(width * 0.2)
-
-        # Define positions for rectangles
+        # Define positions for rectangles (now in corners)
         rectangles = {
             "top-left": (
-                padding,
-                50,
-                padding + top_rect_width,
-                50 + top_rect_height,
-            ),
+                0,
+                0,
+                top_rect_width,
+                top_rect_height,
+            ),  # Top left corner
             "top-right": (
-                width - padding - top_rect_width,
-                50,
-                width - padding,
-                50 + top_rect_height,
-            ),
+                width - top_rect_width,
+                0,
+                width,
+                top_rect_height,
+            ),  # Top right corner
             "bucket-list": (
                 0,
                 height - bottom_rect_height,
@@ -212,22 +209,34 @@ class FingerTrackingGame(QWidget):
         # Draw rectangles
         for rect_name, (x1, y1, x2, y2) in rectangles.items():
             if rect_name == "bucket-list":
-                # Solid orange fill for bottom rectangle (-1 thickness means filled)
+                # Solid orange fill for bottom rectangle
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 165, 255), -1)
 
                 # Add "Bucket List" text
-                font = cv2.FONT_HERSHEY_SIMPLEX
                 text = "Bucket List"
-                text_size = cv2.getTextSize(text, font, 1, 2)[0]
-                text_x = (width - text_size[0]) // 2
-                text_y = height - (bottom_rect_height // 2) + text_size[1] // 2
-                # White text for better contrast on orange background
-                cv2.putText(
-                    frame, text, (text_x, text_y), font, 1, (255, 255, 255), 2
-                )
-            else:
-                # Regular outlined rectangles for top boxes
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
+
+            elif rect_name == "top-left":
+                # Solid green fill for top-left rectangle
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), -1)
+                text = "YES"
+
+            else:  # top-right
+                # Solid red fill for top-right rectangle
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), -1)
+                text = "NO"
+
+            # Add text to each rectangle
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            text_size = cv2.getTextSize(text, font, 1, 2)[0]
+
+            # Calculate center position for text
+            text_x = x1 + (x2 - x1 - text_size[0]) // 2
+            text_y = y1 + (y2 - y1 + text_size[1]) // 2
+
+            # Add white text to all rectangles
+            cv2.putText(
+                frame, text, (text_x, text_y), font, 1, (255, 255, 255), 2
+            )
 
     def closeEvent(self, event):
         # Only release the capture if it hasn't been released already
