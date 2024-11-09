@@ -81,10 +81,14 @@ class QuestionWindow(QWidget):
         self.setWindowTitle("Travel Questions")
         self.setGeometry(100, 100, 1000, 800)
 
-        # Initialize question generator and travel history first
+        # Initialize counters first
+        self.questions_asked = 0
+        self.MAX_QUESTIONS = 10
+
+        # Initialize question generator and travel history
         self.question_generator = QuestionGenerator()
         self.travel_history = TravelHistory()
-        self.current_destination = None  # Initialize current_destination
+        self.current_destination = None
 
         # Create layouts
         main_layout = QVBoxLayout()
@@ -208,6 +212,13 @@ class QuestionWindow(QWidget):
 
     def load_new_question(self):
         print("\nLoading new question...")
+
+        # Check if we've reached the question limit
+        if self.questions_asked >= self.MAX_QUESTIONS:
+            self.show_badge_screen()
+            return
+
+        self.questions_asked += 1
         question, coordinates = self.question_generator.generate_question()
         self.current_destination = self.question_generator.current_destination
         print(
@@ -445,6 +456,81 @@ class QuestionWindow(QWidget):
             self.handle_no_selection()
         elif event.key() == Qt.Key_3:
             self.handle_bucket_list_selection()
+
+    def show_badge_screen(self):
+        self.is_processing = False  # Stop processing gestures
+
+        # Calculate yes count directly from travel history responses
+        yes_count = len(
+            [
+                r
+                for r in self.travel_history.responses
+                if r.get("response") == "yes"
+            ]
+        )
+        badge_info = self.calculate_badge(yes_count)
+
+        # Hide current UI elements
+        self.map_view.hide()
+        self.question_label.hide()
+        self.yes_button.hide()
+        self.no_button.hide()
+        self.bucket_list_button.hide()
+
+        # Create and show badge screen
+        badge_layout = QVBoxLayout()
+
+        badge_title = QLabel(
+            f"Congratulations! You've earned the {badge_info['title']} Badge!"
+        )
+        badge_title.setAlignment(Qt.AlignCenter)
+        badge_title.setFont(QFont("Arial", 20, QFont.Bold))
+
+        badge_description = QLabel(badge_info["description"])
+        badge_description.setAlignment(Qt.AlignCenter)
+        badge_description.setFont(QFont("Arial", 14))
+        badge_description.setWordWrap(True)
+
+        stats_label = QLabel(
+            f"Places visited: {yes_count} out of {self.MAX_QUESTIONS}"
+        )
+        stats_label.setAlignment(Qt.AlignCenter)
+        stats_label.setFont(QFont("Arial", 16))
+
+        # Add to layout
+        badge_layout.addWidget(badge_title)
+        badge_layout.addWidget(badge_description)
+        badge_layout.addWidget(stats_label)
+
+        # Replace main layout with badge layout
+        QWidget().setLayout(self.layout())  # Clear old layout
+        self.setLayout(badge_layout)
+
+    def calculate_badge(self, yes_count):
+        badges = {
+            (0, 2): {
+                "title": "Novice Explorer",
+                "description": "You're just beginning your journey! Keep exploring!",
+            },
+            (3, 5): {
+                "title": "Adventurer",
+                "description": "You're getting the hang of traveling! More adventures await!",
+            },
+            (6, 8): {
+                "title": "Globetrotter",
+                "description": "You're a seasoned traveler! The world is your playground!",
+            },
+            (9, 10): {
+                "title": "World Master",
+                "description": "You're a true citizen of the world! Incredible journey!",
+            },
+        }
+
+        for (min_count, max_count), badge in badges.items():
+            if min_count <= yes_count <= max_count:
+                return badge
+
+        return badges[(0, 2)]  # Default badge
 
 
 if __name__ == "__main__":
