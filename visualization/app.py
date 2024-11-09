@@ -87,6 +87,18 @@ def create_map(df):
             )
         )
 
+    # Before creating the Deck, prepare the tooltip data
+    df["date_info"] = df["date_visited"].apply(
+        lambda x: f"Visited: {x}" if pd.notna(x) else ""
+    )
+    df["photo_link"] = df["photo_url"].apply(
+        lambda x: (
+            f"<a href='{x}' target='_blank' style='color: white;'>📸 Photos</a>"
+            if pd.notna(x)
+            else ""
+        )
+    )
+
     return pdk.Deck(
         layers=layers,
         initial_view_state=pdk.ViewState(
@@ -96,8 +108,17 @@ def create_map(df):
             pitch=0,
         ),
         tooltip={
-            "html": "{destination_name}<br/>{city}, {country}<br/>Status: {response}",
-            "style": {"backgroundColor": "steelblue", "color": "white"},
+            "html": "{destination_name}<br/>"
+            "{city}, {country}<br/>"
+            "Status: {response}<br/>"
+            "{date_info}<br/>"
+            "{photo_link}",
+            "style": {
+                "backgroundColor": "steelblue",
+                "color": "white",
+                "fontSize": "0.8em",
+                "padding": "8px",
+            },
         },
     )
 

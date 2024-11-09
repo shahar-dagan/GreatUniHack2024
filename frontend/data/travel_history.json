@@ -10,7 +10,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T18:23:48.819025",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Santorini",
@@ -23,7 +25,9 @@
     "response": "no",
     "timestamp": "2024-11-09T18:23:54.422666",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Disneyland",
@@ -36,7 +40,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T18:23:58.053974",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Eiffel Tower",
@@ -49,7 +55,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T18:24:02.182761",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Acropolis of Athens",
@@ -62,7 +70,9 @@
     "response": "bucket_list",
     "timestamp": "2024-11-09T18:24:10.358908",
     "date_visited": null,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Chichen Itza",
@@ -75,7 +85,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T18:24:16.695792",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Machu Picchu",
@@ -88,7 +100,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T18:24:20.791024",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Mount Fuji",
@@ -101,7 +115,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T18:24:24.837498",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Petra",
@@ -114,7 +130,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:14:06.481236",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Hagia Sophia",
@@ -127,7 +145,9 @@
     "response": "no",
     "timestamp": "2024-11-09T19:14:12.439490",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Hagia Sophia",
@@ -140,7 +160,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:14:54.801363",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Colosseum",
@@ -153,7 +175,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:14:55.906541",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Taj Mahal",
@@ -166,7 +190,9 @@
     "response": "no",
     "timestamp": "2024-11-09T19:18:33.634197",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Louvre Museum",
@@ -179,7 +205,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:18:35.600280",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Angkor Wat",
@@ -192,7 +220,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:18:36.699999",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Colosseum",
@@ -205,7 +235,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:18:37.795867",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Santorini",
@@ -218,7 +250,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:18:45.745221",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Dubai Mall",
@@ -231,7 +265,9 @@
     "response": "no",
     "timestamp": "2024-11-09T19:41:22.146684",
     "date_visited": null,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Sydney Opera House",
@@ -244,7 +280,9 @@
     "response": "bucket_list",
     "timestamp": "2024-11-09T19:41:27.561173",
     "date_visited": "2002-04-04",
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "Visited: 2002-04-04",
+    "photo_link": ""
   },
   {
     "destination_name": "Sagrada Familia",
@@ -257,7 +295,9 @@
     "response": "bucket_list",
     "timestamp": "2024-11-09T19:41:34.261062",
     "date_visited": null,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Eiffel Tower",
@@ -270,7 +310,9 @@
     "response": "bucket_list",
     "timestamp": "2024-11-09T19:41:35.319633",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Pike Place Market",
@@ -283,7 +325,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:41:43.133440",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Pyramids of Giza",
@@ -296,7 +340,9 @@
     "response": "no",
     "timestamp": "2024-11-09T19:41:50.062306",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Pampas de la Sierra",
@@ -309,7 +355,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:42:07.070441",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Cinque Terre",
@@ -322,7 +370,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:42:08.104207",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Pyramids of Giza",
@@ -335,7 +385,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:42:13.639195",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Taj Mahal",
@@ -348,7 +400,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:42:21.086841",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Great Wall of China",
@@ -361,7 +415,9 @@
     "response": "bucket_list",
     "timestamp": "2024-11-09T19:42:27.878530",
     "date_visited": null,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Angkor Wat",
@@ -374,7 +430,9 @@
     "response": "no",
     "timestamp": "2024-11-09T19:42:33.952616",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Santorini",
@@ -387,7 +445,9 @@
     "response": "bucket_list",
     "timestamp": "2024-11-09T19:42:39.989140",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Christ the Redeemer",
@@ -400,7 +460,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:42:46.265406",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Taj Mahal",
@@ -413,7 +475,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:42:47.356501",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Mount Zion",
@@ -426,7 +490,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:42:52.659144",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Mount Fuji",
@@ -439,7 +505,9 @@
     "response": "no",
     "timestamp": "2024-11-09T19:42:57.560883",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Kilimanjaro",
@@ -452,7 +520,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:43:02.604166",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Louvre Museum",
@@ -465,7 +535,9 @@
     "response": "bucket_list",
     "timestamp": "2024-11-09T19:43:11.833723",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Pampas de la Sierra",
@@ -478,7 +550,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:43:33.311210",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Sydney Opera House",
@@ -491,7 +565,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:43:38.053811",
     "date_visited": "2002-04-04",
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "Visited: 2002-04-04",
+    "photo_link": ""
   },
   {
     "destination_name": "Burj Al Arab",
@@ -504,7 +580,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T19:43:39.082812",
     "date_visited": "2024-11-09",
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "Visited: 2024-11-09",
+    "photo_link": ""
   },
   {
     "destination_name": "Iguazu Falls",
@@ -517,7 +595,9 @@
     "response": "yes",
     "timestamp": "2024-11-09T20:33:27.920926",
     "date_visited": "2024-11-13",
-    "photo_url": "nan"
+    "photo_url": "nan",
+    "date_info": "Visited: 2024-11-13",
+    "photo_link": "<a href='nan' target='_blank' style='color: white;'>\ud83d\udcf8 Photos</a>"
   },
   {
     "destination_name": "Pyramids of Giza",
@@ -530,7 +610,9 @@
     "response": "no",
     "timestamp": "2024-11-09T20:33:38.667760",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   },
   {
     "destination_name": "Mount Rainer",
@@ -543,6 +625,8 @@
     "response": "bucket_list",
     "timestamp": "2024-11-09T20:33:59.499745",
     "date_visited": NaN,
-    "photo_url": NaN
+    "photo_url": NaN,
+    "date_info": "",
+    "photo_link": ""
   }
 ]
