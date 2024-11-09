@@ -55,10 +55,6 @@ class QuestionGenerator:
         # Question templates
         self.templates = [
             "Have you visited the {name} in {city}, {country}?",
-            "Did you get a chance to see {name} when you were in {country}?",
-            "Have you experienced the beauty of {name}?",
-            "Is {name} on your bucket list?",
-            "Would you like to visit {name} in {city}?",
         ]
 
     def generate_question(self) -> tuple[str, tuple]:
