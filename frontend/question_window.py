@@ -87,7 +87,7 @@ class QuestionWindow(QWidget):
 
         # Create layouts
         main_layout = QVBoxLayout()
-        top_layout = QHBoxLayout()
+        buttons_layout = QVBoxLayout()  # New vertical layout for buttons
 
         # Create map view
         self.map_view = QWebEngineView()
@@ -108,7 +108,7 @@ class QuestionWindow(QWidget):
             }
         """
         )
-        self.yes_button.setFixedSize(200, 100)
+        self.yes_button.setFixedHeight(80)
 
         # Create NO button (red)
         self.no_button = QLabel("NO")
@@ -125,7 +125,7 @@ class QuestionWindow(QWidget):
             }
         """
         )
-        self.no_button.setFixedSize(200, 100)
+        self.no_button.setFixedHeight(80)
 
         # Create and style the question label
         self.question_label = QLabel()
@@ -159,11 +159,15 @@ class QuestionWindow(QWidget):
         )
         self.bucket_list_button.setFixedHeight(80)
 
-        # Add map and other elements to layout
-        main_layout.addLayout(top_layout)
+        # Add buttons to the vertical buttons layout
+        buttons_layout.addWidget(self.yes_button)
+        buttons_layout.addWidget(self.no_button)
+        buttons_layout.addWidget(self.bucket_list_button)
+
+        # Add elements to main layout
         main_layout.addWidget(self.map_view)
         main_layout.addWidget(self.question_label)
-        main_layout.addWidget(self.bucket_list_button)
+        main_layout.addLayout(buttons_layout)  # Add the buttons layout
 
         self.setLayout(main_layout)
 
@@ -254,7 +258,7 @@ class QuestionWindow(QWidget):
         # Convert to HSV for color detection
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-        # Define color range for detecting the finger
+        # Define color range for detecting skin
         lower_skin = np.array([0, 20, 70], dtype=np.uint8)
         upper_skin = np.array([20, 255, 255], dtype=np.uint8)
 
@@ -264,39 +268,63 @@ class QuestionWindow(QWidget):
         # Apply morphological operations
         kernel = np.ones((5, 5), np.uint8)
         mask = cv2.erode(mask, kernel, iterations=2)
-        mask = cv2.dilate(mask, kernel, iterations=2)
+        mask = cv2.dilate(mask, kernel, iterations=4)
 
         # Find contours
-        contours, _ = cv2.findContours(
+        contours, hierarchy = cv2.findContours(
             mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE
         )
 
         if contours:
+            # Find the largest contour (hand)
             max_contour = max(contours, key=cv2.contourArea)
-            if cv2.contourArea(max_contour) > 1000:
-                x, y, w, h = cv2.boundingRect(max_contour)
-                finger_x = x + w // 2
-                finger_y = y + h // 2
-                self.detect_corner(finger_x, finger_y, frame)
 
-    def detect_corner(self, finger_x, finger_y, frame):
-        height, width, _ = frame.shape
+            # Get the convex hull of the hand
+            hull = cv2.convexHull(max_contour)
 
-        # Define the regions for detection (matching the visible buttons)
-        regions = {
-            "yes": (0, 0, width // 4, height // 4),
-            "no": (3 * width // 4, 0, width, height // 4),
-            "bucket-list": (0, 3 * height // 4, width, height),
-        }
+            # Get defects in the hull
+            hull = cv2.convexHull(max_contour, returnPoints=False)
+            defects = cv2.convexityDefects(max_contour, hull)
 
-        for region_name, (x1, y1, x2, y2) in regions.items():
-            if x1 <= finger_x <= x2 and y1 <= finger_y <= y2:
-                print(f"Selected: {region_name}")
-                if region_name == "yes":
+            # Count fingers
+            finger_count = 0
+
+            if defects is not None:
+                for i in range(defects.shape[0]):
+                    s, e, f, d = defects[i][0]
+                    start = tuple(max_contour[s][0])
+                    end = tuple(max_contour[e][0])
+                    far = tuple(max_contour[f][0])
+
+                    # Calculate the triangle sides
+                    a = np.sqrt(
+                        (end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2
+                    )
+                    b = np.sqrt(
+                        (far[0] - start[0]) ** 2 + (far[1] - start[1]) ** 2
+                    )
+                    c = np.sqrt((end[0] - far[0]) ** 2 + (end[1] - far[1]) ** 2)
+
+                    # Calculate angle using cosine law
+                    angle = (
+                        np.arccos((b**2 + c**2 - a**2) / (2 * b * c))
+                        * 180
+                        / np.pi
+                    )
+
+                    # If angle is less than 90, count it as a finger
+                    if angle <= 90:
+                        finger_count += 1
+
+                # Add 1 to get the correct finger count (thumb)
+                finger_count = finger_count + 1
+
+                # Process based on finger count
+                if finger_count == 1:
                     self.handle_yes_selection()
-                elif region_name == "no":
+                elif finger_count == 2:
                     self.handle_no_selection()
-                elif region_name == "bucket-list":
+                elif finger_count == 3:
                     self.handle_bucket_list_selection()
 
     def handle_yes_selection(self):
