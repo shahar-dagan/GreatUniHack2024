@@ -5,8 +5,9 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QLabel,
     QPushButton,
+    QHBoxLayout,
 )
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtCore import Qt
 from models import TravelHistory
 import json
@@ -17,7 +18,7 @@ class BadgeScreen(QWidget):
     def __init__(self, travel_history=None):
         super().__init__()
         self.setWindowTitle("Travel Badge")
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 800, 800)
 
         # Initialize travel history
         if travel_history:
@@ -25,6 +26,13 @@ class BadgeScreen(QWidget):
         else:
             self.travel_history = TravelHistory()
             self.load_travel_history()
+
+        # Initialize badge images paths
+        self.badge_images = {
+            "Novice Explorer": "resources/badges/novice_explorer.png",
+            "Adventurer": "resources/badges/adventurer.png",
+            "World Master": "resources/badges/world_master.png",
+        }
 
         self.init_ui()
 
@@ -59,13 +67,33 @@ class BadgeScreen(QWidget):
 
         badge_info = self.calculate_badge(yes_count)
 
-        # Create widgets
-        title = QLabel(
-            f"Congratulations! You've earned the {badge_info['title']} Badge!"
-        )
+        # Create title first
+        title = QLabel("Congratulations!")
         title.setAlignment(Qt.AlignCenter)
-        title.setFont(QFont("Arial", 20, QFont.Bold))
+        title.setFont(QFont("Arial", 24, QFont.Bold))
 
+        # Create badge title
+        badge_title = QLabel(f"You've earned the {badge_info['title']} Badge!")
+        badge_title.setAlignment(Qt.AlignCenter)
+        badge_title.setFont(QFont("Arial", 20, QFont.Bold))
+
+        # Create and add badge image
+        badge_image = QLabel()
+        image_path = os.path.join(
+            os.path.dirname(__file__),
+            self.badge_images.get(
+                badge_info["title"], self.badge_images["Novice Explorer"]
+            ),
+        )
+
+        pixmap = QPixmap(image_path)
+        scaled_pixmap = pixmap.scaled(
+            200, 200, Qt.KeepAspectRatio, Qt.SmoothTransformation
+        )
+        badge_image.setPixmap(scaled_pixmap)
+        badge_image.setAlignment(Qt.AlignCenter)
+
+        # Create other widgets
         description = QLabel(badge_info["description"])
         description.setAlignment(Qt.AlignCenter)
         description.setFont(QFont("Arial", 14))
@@ -78,8 +106,10 @@ class BadgeScreen(QWidget):
         restart_button = QPushButton("Start New Journey")
         restart_button.clicked.connect(self.restart_journey)
 
-        # Add widgets to layout
+        # Add widgets to layout in the correct order
         layout.addWidget(title)
+        layout.addWidget(badge_title)
+        layout.addWidget(badge_image)
         layout.addWidget(description)
         layout.addWidget(stats)
         layout.addWidget(restart_button)
