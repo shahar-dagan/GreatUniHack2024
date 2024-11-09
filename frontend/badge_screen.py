@@ -52,18 +52,9 @@ class BadgeScreen(QWidget):
     def init_ui(self):
         layout = QVBoxLayout()
 
-        # Calculate badge
-        try:
-            yes_count = len(
-                [
-                    r
-                    for r in self.travel_history.history
-                    if r.get("response") == "yes"
-                ]
-            )
-        except AttributeError:
-            print("No travel history found, starting with 0")
-            yes_count = 0
+        # Calculate badge using travel_history's load_responses method
+        responses = self.travel_history.load_responses()
+        yes_count = len([r for r in responses if r.get("response") == "yes"])
 
         badge_info = self.calculate_badge(yes_count)
 
@@ -118,15 +109,15 @@ class BadgeScreen(QWidget):
 
     def calculate_badge(self, yes_count):
         badges = {
-            (0, 1): {
+            (0, 4): {
                 "title": "Novice Explorer",
                 "description": "You're just beginning your journey! Keep exploring!",
             },
-            (2, 2): {
+            (5, 7): {
                 "title": "Adventurer",
                 "description": "You're getting the hang of traveling! More adventures await!",
             },
-            (3, 3): {
+            (8, float("inf")): {
                 "title": "World Master",
                 "description": "You're a true citizen of the world! Incredible journey!",
             },
@@ -136,7 +127,7 @@ class BadgeScreen(QWidget):
             if min_count <= yes_count <= max_count:
                 return badge
 
-        return badges[(0, 1)]  # Default badge
+        return badges[(0, 4)]  # Default badge
 
     def restart_journey(self):
         self.travel_history.clear()
