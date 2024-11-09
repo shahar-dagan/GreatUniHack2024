@@ -17,6 +17,7 @@ from dataclasses import dataclass
 from typing import List, Dict
 import os
 from dotenv import load_dotenv
+import mediapipe as mp
 
 load_dotenv()
 
@@ -185,6 +186,16 @@ class QuestionWindow(QWidget):
         # Set window background color
         self.setStyleSheet("background-color: white;")
 
+        # Initialize MediaPipe Hands
+        self.mp_hands = mp.solutions.hands
+        self.hands = self.mp_hands.Hands(
+            static_image_mode=False,
+            max_num_hands=1,
+            min_detection_confidence=0.7,
+            min_tracking_confidence=0.5,
+        )
+        self.mp_draw = mp.solutions.drawing_utils
+
     def load_new_question(self):
         question, coordinates = self.question_generator.generate_question()
         self.question_label.setText(question)
@@ -255,77 +266,58 @@ class QuestionWindow(QWidget):
         self.process_finger_tracking(frame)
 
     def process_finger_tracking(self, frame):
-        # Convert to HSV for color detection
-        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        # Convert BGR to RGB
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-        # Define color range for detecting skin
-        lower_skin = np.array([0, 20, 70], dtype=np.uint8)
-        upper_skin = np.array([20, 255, 255], dtype=np.uint8)
+        # Process the frame and detect hands
+        results = self.hands.process(rgb_frame)
 
-        # Create a mask for the skin color
-        mask = cv2.inRange(hsv, lower_skin, upper_skin)
+        if results.multi_hand_landmarks:
+            hand_landmarks = results.multi_hand_landmarks[0]  # Get first hand
 
-        # Apply morphological operations
-        kernel = np.ones((5, 5), np.uint8)
-        mask = cv2.erode(mask, kernel, iterations=2)
-        mask = cv2.dilate(mask, kernel, iterations=4)
+            # Get fingertip and pip landmarks for each finger
+            thumb_tip = hand_landmarks.landmark[4]
+            index_tip = hand_landmarks.landmark[8]
+            middle_tip = hand_landmarks.landmark[12]
+            ring_tip = hand_landmarks.landmark[16]
+            pinky_tip = hand_landmarks.landmark[20]
 
-        # Find contours
-        contours, hierarchy = cv2.findContours(
-            mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE
-        )
+            # Get corresponding pip (middle joints) landmarks
+            thumb_pip = hand_landmarks.landmark[3]
+            index_pip = hand_landmarks.landmark[6]
+            middle_pip = hand_landmarks.landmark[10]
+            ring_pip = hand_landmarks.landmark[14]
+            pinky_pip = hand_landmarks.landmark[18]
 
-        if contours:
-            # Find the largest contour (hand)
-            max_contour = max(contours, key=cv2.contourArea)
+            # Count raised fingers
+            fingers = 0
 
-            # Get the convex hull of the hand
-            hull = cv2.convexHull(max_contour)
+            # Special case for thumb
+            if thumb_tip.x < thumb_pip.x:  # Adjust for right hand
+                fingers += 1
 
-            # Get defects in the hull
-            hull = cv2.convexHull(max_contour, returnPoints=False)
-            defects = cv2.convexityDefects(max_contour, hull)
+            # Check other fingers
+            if index_tip.y < index_pip.y:
+                fingers += 1
+            if middle_tip.y < middle_pip.y:
+                fingers += 1
+            if ring_tip.y < ring_pip.y:
+                fingers += 1
+            if pinky_tip.y < pinky_pip.y:
+                fingers += 1
 
-            # Count fingers
-            finger_count = 0
+            # Draw hand landmarks for visualization
+            self.mp_draw.draw_landmarks(
+                frame, hand_landmarks, self.mp_hands.HAND_CONNECTIONS
+            )
 
-            if defects is not None:
-                for i in range(defects.shape[0]):
-                    s, e, f, d = defects[i][0]
-                    start = tuple(max_contour[s][0])
-                    end = tuple(max_contour[e][0])
-                    far = tuple(max_contour[f][0])
-
-                    # Calculate the triangle sides
-                    a = np.sqrt(
-                        (end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2
-                    )
-                    b = np.sqrt(
-                        (far[0] - start[0]) ** 2 + (far[1] - start[1]) ** 2
-                    )
-                    c = np.sqrt((end[0] - far[0]) ** 2 + (end[1] - far[1]) ** 2)
-
-                    # Calculate angle using cosine law
-                    angle = (
-                        np.arccos((b**2 + c**2 - a**2) / (2 * b * c))
-                        * 180
-                        / np.pi
-                    )
-
-                    # If angle is less than 90, count it as a finger
-                    if angle <= 90:
-                        finger_count += 1
-
-                # Add 1 to get the correct finger count (thumb)
-                finger_count = finger_count + 1
-
-                # Process based on finger count
-                if finger_count == 1:
-                    self.handle_yes_selection()
-                elif finger_count == 2:
-                    self.handle_no_selection()
-                elif finger_count == 3:
-                    self.handle_bucket_list_selection()
+            # Process based on finger count
+            if fingers == 1:
+                self.handle_yes_selection()
+            elif fingers == 2:
+                self.handle_no_selection()
+            elif fingers == 3:
+                self.handle_bucket_list_selection()
 
     def handle_yes_selection(self):
         print("YES selected - implement your logic here")
@@ -339,6 +331,7 @@ class QuestionWindow(QWidget):
         print("Bucket List selected - implement your logic here")
 
     def closeEvent(self, event):
+        self.hands.close()  # Clean up MediaPipe resources
         self.cap.release()
         event.accept()
 
