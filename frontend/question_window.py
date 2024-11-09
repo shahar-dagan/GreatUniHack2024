@@ -8,6 +8,8 @@ from PyQt5.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
+    QLineEdit,
+    QPushButton,
 )
 from PyQt5.QtGui import QFont, QPainter, QColor
 from PyQt5.QtCore import QTimer, Qt
@@ -76,9 +78,79 @@ class QuestionGenerator:
         return question, self.current_destination.coordinates
 
 
-class QuestionWindow(QWidget):
+class WelcomeScreen(QWidget):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("Welcome to Travel Questions")
+        self.setGeometry(100, 100, 600, 400)
+        self.setStyleSheet("background-color: white;")
+
+        layout = QVBoxLayout()
+
+        # Welcome message
+        welcome_label = QLabel("Welcome to Travel Questions!")
+        welcome_label.setAlignment(Qt.AlignCenter)
+        welcome_label.setFont(QFont("Arial", 24, QFont.Bold))
+        welcome_label.setStyleSheet("margin: 20px;")
+
+        # Input name title
+        input_title = QLabel("Input Name:")
+        input_title.setAlignment(Qt.AlignCenter)
+        input_title.setFont(QFont("Arial", 18))
+        input_title.setStyleSheet("margin-bottom: 10px;")
+
+        # Name input
+        self.name_input = QLineEdit()
+        self.name_input.setPlaceholderText("Enter your name")
+        self.name_input.setFont(QFont("Arial", 16))
+        self.name_input.setStyleSheet(
+            """
+            QLineEdit {
+                padding: 10px;
+                border: 2px solid #ccc;
+                border-radius: 5px;
+                margin: 20px;
+            }
+        """
+        )
+
+        # Start button
+        self.start_button = QPushButton("Start Game")
+        self.start_button.setFont(QFont("Arial", 16, QFont.Bold))
+        self.start_button.setStyleSheet(
+            """
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                margin: 20px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+        """
+        )
+        self.start_button.clicked.connect(self.start_game)
+
+        layout.addWidget(welcome_label)
+        layout.addWidget(input_title)
+        layout.addWidget(self.name_input)
+        layout.addWidget(self.start_button)
+        layout.setAlignment(Qt.AlignCenter)
+        self.setLayout(layout)
+
+    def start_game(self):
+        if self.name_input.text().strip():
+            self.question_window = QuestionWindow(self.name_input.text())
+            self.question_window.show()
+            self.close()
+
+
+class QuestionWindow(QWidget):
+    def __init__(self, player_name):
+        super().__init__()
+        self.player_name = player_name
         self.setWindowTitle("Travel Questions")
         self.setGeometry(100, 100, 1000, 800)
 
@@ -475,6 +547,6 @@ class QuestionWindow(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = QuestionWindow()
-    window.show()
+    welcome = WelcomeScreen()
+    welcome.show()
     sys.exit(app.exec_())
