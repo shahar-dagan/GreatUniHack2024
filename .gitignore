@@ -3,7 +3,7 @@ venv/
 env/
 .env
 #Remove this before final commit
-data/travel_history.json
+frontend/data/travel_history.json
 
 # Python
 __pycache__/
@@ -32,5 +32,6 @@ wheels/
 .vscode/
 *.swp
 .DS_Store
+frontend/data/travel_history.json
 frontend/data/travel_history.json
 frontend/data/travel_history.json
