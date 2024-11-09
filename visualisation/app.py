@@ -208,24 +208,40 @@ def chat_interface(df):
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # Create a detailed context with the actual data
+        # Create a summarized version of the data
+        country_counts = df["country"].value_counts().to_dict()
+        visited_countries = (
+            df[df["response"] == "yes"]["country"].value_counts().to_dict()
+        )
+        bucket_countries = (
+            df[df["response"] == "bucket_list"]["country"]
+            .value_counts()
+            .to_dict()
+        )
+
+        # Calculate the statistics
         visited_count = len(df[df["response"] == "yes"])
         bucket_count = len(df[df["response"] == "bucket_list"])
-        countries = df["country"].unique().tolist()
+        countries = df["country"].unique()
 
         travel_context = f"""
-        You are a travel assistant analyzing travel history data. The data includes:
-        
-        Raw Data:
-        {df.to_dict('records')}
-        
-        Summary:
+        You are a travel assistant analyzing travel history data. Here's the analysis:
+
+        Country Frequencies (total destinations per country):
+        {country_counts}
+
+        Visited Countries (number of visited places per country):
+        {visited_countries}
+
+        Bucket List Countries (number of bucket list places per country):
+        {bucket_countries}
+
+        Total Statistics:
         - Visited places: {visited_count}
         - Bucket list places: {bucket_count}
-        - Countries in the dataset: {', '.join(countries)}
-        
-        Please analyze this data and provide clear, concise answers about the travel history.
-        You can count frequencies, find patterns, and provide specific details about destinations.
+        - Total countries: {len(countries)}
+
+        Please provide detailed analysis based on this data.
         """
 
         # Create OpenAI client and generate response
@@ -236,20 +252,18 @@ def chat_interface(df):
             message_placeholder = st.empty()
             full_response = ""
 
-            # Add the previous conversation context
             messages = [
                 {"role": "system", "content": travel_context},
+                {"role": "user", "content": prompt},
             ]
-            # Add the last few messages for context (limit to last 4 exchanges)
-            messages.extend(st.session_state.messages[-8:])
 
             # Generate OpenAI response
             response = client.chat.completions.create(
                 model="gpt-4",
                 messages=messages,
                 stream=True,
-                temperature=0.7,  # Add some creativity but keep it factual
-                max_tokens=500,  # Limit response length
+                temperature=0.7,
+                max_tokens=500,
             )
 
             # Stream the response
