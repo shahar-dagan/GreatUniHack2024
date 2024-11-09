@@ -18,6 +18,8 @@ from typing import List, Dict
 import os
 from dotenv import load_dotenv
 import mediapipe as mp
+import json
+from pathlib import Path
 
 load_dotenv()
 
@@ -35,24 +37,20 @@ class TouristDestination:
 
 class QuestionGenerator:
     def __init__(self):
-        # Sample database of tourist destinations
-        self.destinations = [
-            TouristDestination(
-                name="Eiffel Tower",
-                city="Paris",
-                country="France",
-                coordinates=(48.8584, 2.2945),
-                category="landmark",
-            ),
-            TouristDestination(
-                name="Taj Mahal",
-                city="Agra",
-                country="India",
-                coordinates=(27.1751, 78.0421),
-                category="landmark",
-            ),
-            # Add more destinations...
-        ]
+        # Load destinations from JSON file
+        data_file = Path(__file__).parent / "data" / "destinations.json"
+        with open(data_file, "r") as f:
+            data = json.load(f)
+            self.destinations = [
+                TouristDestination(
+                    name=dest["name"],
+                    city=dest["city"],
+                    country=dest["country"],
+                    coordinates=tuple(dest["coordinates"]),
+                    category=dest["category"],
+                )
+                for dest in data["destinations"]
+            ]
 
         # Question templates
         self.templates = [
