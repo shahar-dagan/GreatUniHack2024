@@ -5,441 +5,567 @@
       "city": "Paris",
       "country": "France",
       "coordinates": [48.8584, 2.2945],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Taj Mahal",
       "city": "Agra",
       "country": "India",
       "coordinates": [27.1751, 78.0421],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Great Wall of China",
       "city": "Beijing",
       "country": "China",
       "coordinates": [40.4319, 116.5704],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Colosseum",
       "city": "Rome",
       "country": "Italy",
       "coordinates": [41.8902, 12.4922],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Machu Picchu",
       "city": "Cusco",
       "country": "Peru",
       "coordinates": [-13.1631, -72.545],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Statue of Liberty",
       "city": "New York",
       "country": "USA",
       "coordinates": [40.6892, -74.0445],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Sydney Opera House",
       "city": "Sydney",
       "country": "Australia",
       "coordinates": [-33.8568, 151.2153],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Christ the Redeemer",
       "city": "Rio de Janeiro",
       "country": "Brazil",
       "coordinates": [-22.9519, -43.2105],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Pyramids of Giza",
       "city": "Giza",
       "country": "Egypt",
       "coordinates": [29.9792, 31.1342],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Mount Fuji",
       "city": "Fujinomiya",
       "country": "Japan",
       "coordinates": [35.3606, 138.7274],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Santorini",
       "city": "Santorini",
       "country": "Greece",
       "coordinates": [36.3932, 25.4615],
-      "category": "beach"
+      "category": "beach",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Niagara Falls",
       "city": "Niagara Falls",
       "country": "Canada/USA",
       "coordinates": [43.0799, -79.0742],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Acropolis of Athens",
       "city": "Athens",
       "country": "Greece",
       "coordinates": [37.9715, 23.7267],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Burj Khalifa",
       "city": "Dubai",
       "country": "UAE",
       "coordinates": [25.1972, 55.2744],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Grand Canyon",
       "city": "Grand Canyon Village",
       "country": "USA",
       "coordinates": [36.1069, -112.1129],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Stonehenge",
       "city": "Salisbury",
       "country": "England",
       "coordinates": [51.1789, -1.8262],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Sagrada Familia",
       "city": "Barcelona",
       "country": "Spain",
       "coordinates": [41.4036, 2.1744],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Palace of Versailles",
       "city": "Versailles",
       "country": "France",
       "coordinates": [48.8049, 2.1204],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Mount Everest",
       "city": "Solukhumbu",
       "country": "Nepal",
       "coordinates": [27.9881, 86.925],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Kilimanjaro",
       "city": "Kilimanjaro",
       "country": "Tanzania",
       "coordinates": [-3.0674, 37.3556],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Angkor Wat",
       "city": "Siem Reap",
       "country": "Cambodia",
       "coordinates": [13.4125, 103.8667],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Yellowstone National Park",
       "city": "Yellowstone",
       "country": "USA",
       "coordinates": [44.428, -110.5885],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Alhambra",
       "city": "Granada",
       "country": "Spain",
       "coordinates": [37.7695, -3.5909],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Prague Castle",
       "city": "Prague",
       "country": "Czech Republic",
       "coordinates": [50.0901, 14.4005],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Galápagos Islands",
       "city": "Galápagos",
       "country": "Ecuador",
       "coordinates": [-0.9538, -90.9656],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Pampas de la Sierra",
       "city": "Argentina",
       "country": "Argentina",
       "coordinates": [-30.9371, -61.3631],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Mount Etna",
       "city": "Catania",
       "country": "Italy",
       "coordinates": [37.751, 15.0042],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Zhangjiajie National Forest Park",
       "city": "Zhangjiajie",
       "country": "China",
       "coordinates": [29.35, 110.52],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Dubai Mall",
       "city": "Dubai",
       "country": "UAE",
       "coordinates": [25.1972, 55.2794],
-      "category": "shopping"
+      "category": "shopping",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Louvre Museum",
       "city": "Paris",
       "country": "France",
       "coordinates": [48.8606, 2.3376],
-      "category": "museum"
+      "category": "museum",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Pike Place Market",
       "city": "Seattle",
       "country": "USA",
       "coordinates": [47.6097, -122.3426],
-      "category": "market"
+      "category": "market",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "The Great Barrier Reef",
       "city": "Queensland",
       "country": "Australia",
       "coordinates": [-18.2871, 147.6992],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Salar de Uyuni",
       "city": "Uyuni",
       "country": "Bolivia",
       "coordinates": [-20.1338, -66.9199],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Big Ben",
       "city": "London",
       "country": "England",
       "coordinates": [51.5007, -0.1246],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Mount Rainer",
       "city": "Seattle",
       "country": "USA",
       "coordinates": [46.8523, -121.7603],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Burj Al Arab",
       "city": "Dubai",
       "country": "UAE",
       "coordinates": [25.1413, 55.1853],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Mount Zion",
       "city": "Jerusalem",
       "country": "Israel",
       "coordinates": [31.7767, 35.2327],
-      "category": "historical"
+      "category": "historical",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "The Parthenon",
       "city": "Athens",
       "country": "Greece",
       "coordinates": [37.9715, 23.7267],
-      "category": "historical"
+      "category": "historical",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "The Dead Sea",
       "city": "Jordan",
       "country": "Jordan",
       "coordinates": [31.559, 35.4732],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Golden Gate Bridge",
       "city": "San Francisco",
       "country": "USA",
       "coordinates": [37.8199, -122.4783],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Mount Rushmore",
       "city": "Keystone",
       "country": "USA",
       "coordinates": [43.8791, -103.4591],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Cinque Terre",
       "city": "Liguria",
       "country": "Italy",
       "coordinates": [44.1134, 9.671],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Mount Kilimanjaro",
       "city": "Tanzania",
       "country": "Tanzania",
       "coordinates": [-3.0674, 37.3556],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Petra",
       "city": "Wadi Musa",
       "country": "Jordan",
       "coordinates": [30.3285, 35.4444],
-      "category": "historical"
+      "category": "historical",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Northern Lights",
       "city": "Tromsø",
       "country": "Norway",
       "coordinates": [69.6492, 18.9553],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Victoria Falls",
       "city": "Livingstone",
       "country": "Zambia/Zimbabwe",
       "coordinates": [-17.9244, 25.8567],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Forbidden City",
       "city": "Beijing",
       "country": "China",
       "coordinates": [39.9169, 116.3907],
-      "category": "historical"
+      "category": "historical",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Maui Beach",
       "city": "Lahaina",
       "country": "USA",
       "coordinates": [20.8824, -156.6817],
-      "category": "beach"
+      "category": "beach",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Antelope Canyon",
       "city": "Page",
       "country": "USA",
       "coordinates": [36.8619, -111.3743],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Kremlin",
       "city": "Moscow",
       "country": "Russia",
       "coordinates": [55.752, 37.6175],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Dubrovnik Old Town",
       "city": "Dubrovnik",
       "country": "Croatia",
       "coordinates": [42.6507, 18.0944],
-      "category": "historical"
+      "category": "historical",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Moraine Lake",
       "city": "Banff",
       "country": "Canada",
       "coordinates": [51.3217, -116.186],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Halong Bay",
       "city": "Halong",
       "country": "Vietnam",
       "coordinates": [20.9101, 107.1839],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Iguazu Falls",
       "city": "Puerto Iguazu",
       "country": "Argentina/Brazil",
       "coordinates": [-25.6953, -54.4367],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Cappadocia",
       "city": "Göreme",
       "country": "Turkey",
       "coordinates": [38.6431, 34.8281],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Blue Mosque",
       "city": "Istanbul",
       "country": "Turkey",
       "coordinates": [41.0054, 28.9768],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Shibuya Crossing",
       "city": "Tokyo",
       "country": "Japan",
       "coordinates": [35.6595, 139.7004],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Gardens by the Bay",
       "city": "Singapore",
       "country": "Singapore",
       "coordinates": [1.2816, 103.8636],
-      "category": "landmark"
+      "category": "landmark",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Cliffs of Moher",
       "city": "Liscannor",
       "country": "Ireland",
       "coordinates": [52.9715, -9.4309],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Thorsmork",
       "city": "Thorsmork",
       "country": "Iceland",
       "coordinates": [63.681, -19.5085],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Potala Palace",
       "city": "Lhasa",
       "country": "Tibet",
       "coordinates": [29.6554, 91.1175],
-      "category": "historical"
+      "category": "historical",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Banaue Rice Terraces",
       "city": "Banaue",
       "country": "Philippines",
       "coordinates": [16.9199, 121.0549],
-      "category": "natural"
+      "category": "natural",
+      "date_visited": null,
+      "photo_url": null
     },
     {
       "name": "Gdańsk Old Town",
       "city": "Gdańsk",
       "country": "Poland",
       "coordinates": [54.352, 18.6466],
-      "category": "historical"
+      "category": "historical",
+      "date_visited": null,
+      "photo_url": null
     }
   ]
 }
