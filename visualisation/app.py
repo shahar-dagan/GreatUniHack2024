@@ -88,9 +88,6 @@ def create_map(df):
         )
 
     # Before creating the Deck, prepare the tooltip data
-    df["date_info"] = df["date_visited"].apply(
-        lambda x: f"Visited: {x}" if pd.notna(x) else ""
-    )
     df["photo_link"] = df["photo_url"].apply(
         lambda x: (
             f"<a href='{x}' target='_blank' style='color: white;'>📸 Photos</a>"
@@ -108,7 +105,7 @@ def create_map(df):
             pitch=0,
         ),
         tooltip={
-            "html": "{destination_name}<br/>"
+            "html": "<b>{destination_name}</b><br/>"
             "{city}, {country}<br/>"
             "Status: {response}<br/>"
             "{date_info}<br/>"
