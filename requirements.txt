@@ -3,3 +3,10 @@ opencv-python
 dlib
 PyQtWebEngine
 python-dotenv
+openai
+streamlit
+pandas
+pydantic
+pydantic-settings
+pydantic-core
+pydantic-settings

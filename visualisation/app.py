@@ -4,6 +4,11 @@ import pydeck as pdk
 import json
 from pathlib import Path
 from datetime import datetime
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 st.set_page_config(layout="wide", page_title="Travel History Visualization")
 
@@ -88,9 +93,6 @@ def create_map(df):
         )
 
     # Before creating the Deck, prepare the tooltip data
-    df["date_info"] = df["date_visited"].apply(
-        lambda x: f"Visited: {x}" if pd.notna(x) else ""
-    )
     df["photo_link"] = df["photo_url"].apply(
         lambda x: (
             f"<a href='{x}' target='_blank' style='color: white;'>📸 Photos</a>"
@@ -108,7 +110,7 @@ def create_map(df):
             pitch=0,
         ),
         tooltip={
-            "html": "{destination_name}<br/>"
+            "html": "<b>{destination_name}</b><br/>"
             "{city}, {country}<br/>"
             "Status: {response}<br/>"
             "{date_info}<br/>"
@@ -177,6 +179,92 @@ def save_travel_data(df):
         json.dump(data, f, indent=2)
 
 
+def chat_interface(df):
+    st.header("💬 Chat with Your Travel Data")
+
+    # Check for API key
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        st.error(
+            "Please set your OpenAI API key in the environment variables (OPENAI_API_KEY)"
+        )
+        return
+
+    # Initialize chat history
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+
+    # Display chat history
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # Chat input
+    if prompt := st.chat_input("Ask about your travel history..."):
+        # Add user message to chat history
+        st.session_state.messages.append({"role": "user", "content": prompt})
+
+        # Display user message
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        # Create a detailed context with the actual data
+        visited_count = len(df[df["response"] == "yes"])
+        bucket_count = len(df[df["response"] == "bucket_list"])
+        countries = df["country"].unique().tolist()
+
+        travel_context = f"""
+        You are a travel assistant analyzing travel history data. The data includes:
+        
+        Raw Data:
+        {df.to_dict('records')}
+        
+        Summary:
+        - Visited places: {visited_count}
+        - Bucket list places: {bucket_count}
+        - Countries in the dataset: {', '.join(countries)}
+        
+        Please analyze this data and provide clear, concise answers about the travel history.
+        You can count frequencies, find patterns, and provide specific details about destinations.
+        """
+
+        # Create OpenAI client and generate response
+        client = OpenAI(api_key=api_key)
+
+        # Prepare the assistant's response
+        with st.chat_message("assistant"):
+            message_placeholder = st.empty()
+            full_response = ""
+
+            # Add the previous conversation context
+            messages = [
+                {"role": "system", "content": travel_context},
+            ]
+            # Add the last few messages for context (limit to last 4 exchanges)
+            messages.extend(st.session_state.messages[-8:])
+
+            # Generate OpenAI response
+            response = client.chat.completions.create(
+                model="gpt-4",
+                messages=messages,
+                stream=True,
+                temperature=0.7,  # Add some creativity but keep it factual
+                max_tokens=500,  # Limit response length
+            )
+
+            # Stream the response
+            for chunk in response:
+                if chunk.choices[0].delta.content is not None:
+                    full_response += chunk.choices[0].delta.content
+                message_placeholder.markdown(full_response + "▌")
+            message_placeholder.markdown(full_response)
+
+        # Add assistant response to chat history
+        st.session_state.messages.append(
+            {"role": "assistant", "content": full_response}
+        )
+
+
 def main():
     if st.button("🔄 Refresh Data"):
         st.write("Cache cleared!")
@@ -208,8 +296,8 @@ def main():
     st.pydeck_chart(create_map(df))
 
     # Create tabs for detailed views
-    tab1, tab2, tab3 = st.tabs(
-        ["✈️ Visited", "🎯 Bucket List", "❌ Not Visited"]
+    tab1, tab2, tab3, tab4 = st.tabs(
+        ["✈️ Visited", "🎯 Bucket List", "❌ Not Visited", "💬 Chat Analysis"]
     )
 
     with tab1:
@@ -310,6 +398,9 @@ def main():
             )
         else:
             st.info("No 'not visited' places recorded!")
+
+    with tab4:
+        chat_interface(df)  # New function for the chat interface
 
 
 if __name__ == "__main__":
