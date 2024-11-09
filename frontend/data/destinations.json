@@ -288,13 +288,6 @@
       "category": "landmark"
     },
     {
-      "name": "Sagrada Familia",
-      "city": "Barcelona",
-      "country": "Spain",
-      "coordinates": [41.4036, 2.1744],
-      "category": "landmark"
-    },
-    {
       "name": "Cinque Terre",
       "city": "Liguria",
       "country": "Italy",
@@ -307,6 +300,146 @@
       "country": "Tanzania",
       "coordinates": [-3.0674, 37.3556],
       "category": "natural"
+    },
+    {
+      "name": "Petra",
+      "city": "Wadi Musa",
+      "country": "Jordan",
+      "coordinates": [30.3285, 35.4444],
+      "category": "historical"
+    },
+    {
+      "name": "Northern Lights",
+      "city": "Tromsø",
+      "country": "Norway",
+      "coordinates": [69.6492, 18.9553],
+      "category": "natural"
+    },
+    {
+      "name": "Victoria Falls",
+      "city": "Livingstone",
+      "country": "Zambia/Zimbabwe",
+      "coordinates": [-17.9244, 25.8567],
+      "category": "natural"
+    },
+    {
+      "name": "Forbidden City",
+      "city": "Beijing",
+      "country": "China",
+      "coordinates": [39.9169, 116.3907],
+      "category": "historical"
+    },
+    {
+      "name": "Maui Beach",
+      "city": "Lahaina",
+      "country": "USA",
+      "coordinates": [20.8824, -156.6817],
+      "category": "beach"
+    },
+    {
+      "name": "Antelope Canyon",
+      "city": "Page",
+      "country": "USA",
+      "coordinates": [36.8619, -111.3743],
+      "category": "natural"
+    },
+    {
+      "name": "Kremlin",
+      "city": "Moscow",
+      "country": "Russia",
+      "coordinates": [55.752, 37.6175],
+      "category": "landmark"
+    },
+    {
+      "name": "Dubrovnik Old Town",
+      "city": "Dubrovnik",
+      "country": "Croatia",
+      "coordinates": [42.6507, 18.0944],
+      "category": "historical"
+    },
+    {
+      "name": "Moraine Lake",
+      "city": "Banff",
+      "country": "Canada",
+      "coordinates": [51.3217, -116.186],
+      "category": "natural"
+    },
+    {
+      "name": "Halong Bay",
+      "city": "Halong",
+      "country": "Vietnam",
+      "coordinates": [20.9101, 107.1839],
+      "category": "natural"
+    },
+    {
+      "name": "Iguazu Falls",
+      "city": "Puerto Iguazu",
+      "country": "Argentina/Brazil",
+      "coordinates": [-25.6953, -54.4367],
+      "category": "natural"
+    },
+    {
+      "name": "Cappadocia",
+      "city": "Göreme",
+      "country": "Turkey",
+      "coordinates": [38.6431, 34.8281],
+      "category": "natural"
+    },
+    {
+      "name": "Blue Mosque",
+      "city": "Istanbul",
+      "country": "Turkey",
+      "coordinates": [41.0054, 28.9768],
+      "category": "landmark"
+    },
+    {
+      "name": "Shibuya Crossing",
+      "city": "Tokyo",
+      "country": "Japan",
+      "coordinates": [35.6595, 139.7004],
+      "category": "landmark"
+    },
+    {
+      "name": "Gardens by the Bay",
+      "city": "Singapore",
+      "country": "Singapore",
+      "coordinates": [1.2816, 103.8636],
+      "category": "landmark"
+    },
+    {
+      "name": "Cliffs of Moher",
+      "city": "Liscannor",
+      "country": "Ireland",
+      "coordinates": [52.9715, -9.4309],
+      "category": "natural"
+    },
+    {
+      "name": "Thorsmork",
+      "city": "Thorsmork",
+      "country": "Iceland",
+      "coordinates": [63.681, -19.5085],
+      "category": "natural"
+    },
+    {
+      "name": "Potala Palace",
+      "city": "Lhasa",
+      "country": "Tibet",
+      "coordinates": [29.6554, 91.1175],
+      "category": "historical"
+    },
+    {
+      "name": "Banaue Rice Terraces",
+      "city": "Banaue",
+      "country": "Philippines",
+      "coordinates": [16.9199, 121.0549],
+      "category": "natural"
+    },
+    {
+      "name": "Gdańsk Old Town",
+      "city": "Gdańsk",
+      "country": "Poland",
+      "coordinates": [54.352, 18.6466],
+      "category": "historical"
     }
   ]
 }
