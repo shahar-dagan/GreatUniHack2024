@@ -20,6 +20,7 @@ from dotenv import load_dotenv
 import mediapipe as mp
 import json
 from pathlib import Path
+import time
 
 load_dotenv()
 
@@ -190,6 +191,12 @@ class QuestionWindow(QWidget):
         )
         self.mp_draw = mp.solutions.drawing_utils
 
+        # Add timing and state variables
+        self.detection_start_time = None
+        self.current_fingers = None
+        self.buffer_time = 0.5  # seconds
+        self.is_processing = True  # Flag to control detection
+
     def load_new_question(self):
         question, coordinates = self.question_generator.generate_question()
         self.question_label.setText(question)
@@ -259,70 +266,90 @@ class QuestionWindow(QWidget):
         frame = cv2.flip(frame, 1)
         self.process_finger_tracking(frame)
 
-    def process_finger_tracking(self, frame):
-        # Convert BGR to RGB
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # Add visual feedback about detection
+        if self.current_fingers is not None and self.is_processing:
+            remaining_time = max(
+                0, self.buffer_time - (time.time() - self.detection_start_time)
+            )
+            cv2.putText(
+                frame,
+                f"Detected {self.current_fingers} fingers... {remaining_time:.1f}s",
+                (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1,
+                (0, 255, 0),
+                2,
+            )
 
-        # Process the frame and detect hands
+        # Convert frame for display
+        # ... rest of your existing frame display code ...
+
+    def process_finger_tracking(self, frame):
+        if not self.is_processing:
+            return
+
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = self.hands.process(rgb_frame)
 
         if results.multi_hand_landmarks:
-            hand_landmarks = results.multi_hand_landmarks[0]  # Get first hand
+            hand_landmarks = results.multi_hand_landmarks[0]
 
-            # Get fingertip and pip landmarks for each finger
-            thumb_tip = hand_landmarks.landmark[4]
-            index_tip = hand_landmarks.landmark[8]
-            middle_tip = hand_landmarks.landmark[12]
-            ring_tip = hand_landmarks.landmark[16]
-            pinky_tip = hand_landmarks.landmark[20]
-
-            # Get corresponding pip (middle joints) landmarks
-            thumb_pip = hand_landmarks.landmark[3]
-            index_pip = hand_landmarks.landmark[6]
-            middle_pip = hand_landmarks.landmark[10]
-            ring_pip = hand_landmarks.landmark[14]
-            pinky_pip = hand_landmarks.landmark[18]
-
-            # Count raised fingers
+            # Count fingers logic remains the same
             fingers = 0
 
             # Special case for thumb
-            if thumb_tip.x < thumb_pip.x:  # Adjust for right hand
+            thumb_tip = hand_landmarks.landmark[4]
+            thumb_pip = hand_landmarks.landmark[3]
+            if thumb_tip.x < thumb_pip.x:
                 fingers += 1
 
             # Check other fingers
-            if index_tip.y < index_pip.y:
-                fingers += 1
-            if middle_tip.y < middle_pip.y:
-                fingers += 1
-            if ring_tip.y < ring_pip.y:
-                fingers += 1
-            if pinky_tip.y < pinky_pip.y:
-                fingers += 1
+            for tip_id, pip_id in [(8, 6), (12, 10), (16, 14), (20, 18)]:
+                if (
+                    hand_landmarks.landmark[tip_id].y
+                    < hand_landmarks.landmark[pip_id].y
+                ):
+                    fingers += 1
 
-            # Draw hand landmarks for visualization
-            self.mp_draw.draw_landmarks(
-                frame, hand_landmarks, self.mp_hands.HAND_CONNECTIONS
-            )
-
-            # Process based on finger count
-            if fingers == 1:
-                self.handle_yes_selection()
-            elif fingers == 2:
-                self.handle_no_selection()
-            elif fingers == 3:
-                self.handle_bucket_list_selection()
+            # If this is a new valid finger count (1, 2, or 3), start the timer
+            if fingers in [1, 2, 3]:
+                if self.current_fingers != fingers:
+                    self.current_fingers = fingers
+                    self.detection_start_time = time.time()
+                # If we've held the same gesture for 1 second
+                elif time.time() - self.detection_start_time >= 1.0:
+                    if fingers == 1:
+                        self.handle_yes_selection()
+                    elif fingers == 2:
+                        self.handle_no_selection()
+                    elif fingers == 3:
+                        self.handle_bucket_list_selection()
+                    # Reset for next detection
+                    self.current_fingers = None
+                    self.detection_start_time = None
+            else:
+                # Reset if invalid finger count
+                self.current_fingers = None
+                self.detection_start_time = None
+        else:
+            # Reset if no hand detected
+            self.current_fingers = None
+            self.detection_start_time = None
 
     def handle_yes_selection(self):
         print("YES selected - implement your logic here")
         self.load_new_question()  # Get a new question
+        self.is_processing = True  # Re-enable processing for new question
 
     def handle_no_selection(self):
         print("NO selected - implement your logic here")
         self.load_new_question()  # Get a new question
+        self.is_processing = True  # Re-enable processing for new question
 
     def handle_bucket_list_selection(self):
         print("Bucket List selected - implement your logic here")
+        self.load_new_question()  # Get a new question
+        self.is_processing = True  # Re-enable processing for new question
 
     def closeEvent(self, event):
         self.hands.close()  # Clean up MediaPipe resources
