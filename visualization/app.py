@@ -196,40 +196,71 @@ def main():
             "timestamp", ascending=False
         )
         if not visited.empty:
-            # Create the data view first
-            data_view = visited[
-                [
-                    "destination_name",
-                    "city",
-                    "country",
-                    "timestamp",
-                    "date_visited",
-                    "photo_url",
-                ]
-            ]
+            # Convert date_visited strings to datetime objects
+            visited["date_visited"] = pd.to_datetime(
+                visited["date_visited"], errors="coerce"
+            )
 
-            # Display the dataframe and store the selection state
-            selection = st.data_editor(
-                data_view,
+            # Display each destination in a dataframe with editable columns
+            edited_df = st.data_editor(
+                visited[
+                    [
+                        "destination_name",
+                        "city",
+                        "country",
+                        "timestamp",
+                        "date_visited",
+                        "photo_url",
+                    ]
+                ],
                 hide_index=True,
                 column_config={
-                    "date_visited": "Date Visited",
-                    "photo_url": "Photo URL",
+                    "destination_name": "Destination",
+                    "city": st.column_config.TextColumn("City", disabled=True),
+                    "country": st.column_config.TextColumn(
+                        "Country", disabled=True
+                    ),
+                    "timestamp": st.column_config.TextColumn(
+                        "Added On", disabled=True
+                    ),
+                    "date_visited": st.column_config.DateColumn(
+                        "Date Visited",
+                        help="When did you visit this location?",
+                        format="YYYY-MM-DD",
+                        step=1,  # Show daily intervals
+                    ),
+                    "photo_url": st.column_config.TextColumn(
+                        "Photo URL",
+                        help="Link to your photos",
+                    ),
                 },
                 use_container_width=True,
+                key="destination_editor",
                 num_rows="dynamic",
             )
 
-            # Check if any row is selected and get the selected index
-            if selection is not None and len(selection) > 0:
-                # Get the selected destination name
-                selected_dest_name = selection["destination_name"]
-                # Find the corresponding row in the visited dataframe
-                selected_row = visited[
-                    visited["destination_name"] == selected_dest_name
-                ].iloc[0]
-                if create_edit_form(selected_row.to_dict(), df):
-                    st.rerun()
+            # If any changes were made, save them
+            if edited_df is not None and st.button("Save Changes"):
+                # Convert dates back to string format for saving
+                edited_df["date_visited"] = edited_df[
+                    "date_visited"
+                ].dt.strftime("%Y-%m-%d")
+
+                # Update the main dataframe with edited values
+                for idx, row in edited_df.iterrows():
+                    df.loc[
+                        df["destination_name"] == row["destination_name"],
+                        "date_visited",
+                    ] = row["date_visited"]
+                    df.loc[
+                        df["destination_name"] == row["destination_name"],
+                        "photo_url",
+                    ] = row["photo_url"]
+
+                # Save to file
+                save_travel_data(df)
+                st.success("Changes saved successfully!")
+                st.rerun()
         else:
             st.info("No visited places yet!")
 

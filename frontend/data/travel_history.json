@@ -9,7 +9,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T18:23:48.819025",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -22,7 +22,7 @@
     ],
     "response": "no",
     "timestamp": "2024-11-09T18:23:54.422666",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -35,7 +35,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T18:23:58.053974",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -48,7 +48,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T18:24:02.182761",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -74,7 +74,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T18:24:16.695792",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -87,7 +87,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T18:24:20.791024",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -100,7 +100,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T18:24:24.837498",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -113,7 +113,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:14:06.481236",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -126,7 +126,7 @@
     ],
     "response": "no",
     "timestamp": "2024-11-09T19:14:12.439490",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -139,7 +139,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:14:54.801363",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -152,7 +152,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:14:55.906541",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -165,7 +165,7 @@
     ],
     "response": "no",
     "timestamp": "2024-11-09T19:18:33.634197",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -178,7 +178,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:18:35.600280",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -191,7 +191,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:18:36.699999",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -204,7 +204,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:18:37.795867",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -217,7 +217,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:18:45.745221",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -243,7 +243,7 @@
     ],
     "response": "bucket_list",
     "timestamp": "2024-11-09T19:41:27.561173",
-    "date_visited": null,
+    "date_visited": "2002-04-04",
     "photo_url": NaN
   },
   {
@@ -269,7 +269,7 @@
     ],
     "response": "bucket_list",
     "timestamp": "2024-11-09T19:41:35.319633",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -282,7 +282,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:41:43.133440",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -295,7 +295,7 @@
     ],
     "response": "no",
     "timestamp": "2024-11-09T19:41:50.062306",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -308,7 +308,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:42:07.070441",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -321,7 +321,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:42:08.104207",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -334,7 +334,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:42:13.639195",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -347,7 +347,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:42:21.086841",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -373,7 +373,7 @@
     ],
     "response": "no",
     "timestamp": "2024-11-09T19:42:33.952616",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -386,7 +386,7 @@
     ],
     "response": "bucket_list",
     "timestamp": "2024-11-09T19:42:39.989140",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -399,7 +399,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:42:46.265406",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -412,7 +412,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:42:47.356501",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -425,7 +425,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:42:52.659144",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -438,7 +438,7 @@
     ],
     "response": "no",
     "timestamp": "2024-11-09T19:42:57.560883",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -451,7 +451,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:43:02.604166",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -464,7 +464,7 @@
     ],
     "response": "bucket_list",
     "timestamp": "2024-11-09T19:43:11.833723",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -477,7 +477,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:43:33.311210",
-    "date_visited": null,
+    "date_visited": NaN,
     "photo_url": NaN
   },
   {
@@ -490,7 +490,7 @@
     ],
     "response": "yes",
     "timestamp": "2024-11-09T19:43:38.053811",
-    "date_visited": null,
+    "date_visited": "2002-04-04",
     "photo_url": NaN
   },
   {
