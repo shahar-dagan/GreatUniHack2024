@@ -1,18 +1,90 @@
 [
-  {
-    "destination_name": "Colosseum",
-    "city": "Rome",
-    "country": "Italy",
-    "coordinates": [41.8902, 12.4922],
-    "response": "no",
-    "timestamp": "2024-11-09T18:11:08.759568"
-  },
-  {
-    "destination_name": "Blue Lagoon",
-    "city": "Grindavík",
-    "country": "Iceland",
-    "coordinates": [63.879, -22.4467],
-    "response": "no",
-    "timestamp": "2024-11-09T18:11:26.805358"
-  }
+    {
+        "destination_name": "Grand Canyon",
+        "city": "Arizona",
+        "country": "United States",
+        "coordinates": [
+            36.1069,
+            -112.1129
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T18:23:48.819025"
+    },
+    {
+        "destination_name": "Santorini",
+        "city": "Santorini",
+        "country": "Greece",
+        "coordinates": [
+            36.3932,
+            25.4615
+        ],
+        "response": "no",
+        "timestamp": "2024-11-09T18:23:54.422666"
+    },
+    {
+        "destination_name": "Disneyland",
+        "city": "Anaheim",
+        "country": "United States",
+        "coordinates": [
+            33.8121,
+            -117.919
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T18:23:58.053974"
+    },
+    {
+        "destination_name": "Eiffel Tower",
+        "city": "Paris",
+        "country": "France",
+        "coordinates": [
+            48.8584,
+            2.2945
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T18:24:02.182761"
+    },
+    {
+        "destination_name": "Acropolis of Athens",
+        "city": "Athens",
+        "country": "Greece",
+        "coordinates": [
+            37.9715,
+            23.7267
+        ],
+        "response": "bucket_list",
+        "timestamp": "2024-11-09T18:24:10.358908"
+    },
+    {
+        "destination_name": "Chichen Itza",
+        "city": "Yucatan",
+        "country": "Mexico",
+        "coordinates": [
+            20.6843,
+            -88.5678
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T18:24:16.695792"
+    },
+    {
+        "destination_name": "Machu Picchu",
+        "city": "Cusco",
+        "country": "Peru",
+        "coordinates": [
+            -13.1631,
+            -72.545
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T18:24:20.791024"
+    },
+    {
+        "destination_name": "Mount Fuji",
+        "city": "Shizuoka",
+        "country": "Japan",
+        "coordinates": [
+            35.3606,
+            138.7274
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T18:24:24.837498"
+    }
 ]
