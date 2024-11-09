@@ -18,3 +18,4 @@ If the code doesn't run after installing the libraries change interpreter
 2. Run it - streamlit run visualization/app.py
 3. You can see the app at http://localhost:8501/
 4. Run it when the venv is running - streamlit run visualization/app.py
+5. Actually you need to run this from root - streamlit run visualization/app.py
