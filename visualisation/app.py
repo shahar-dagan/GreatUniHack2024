@@ -16,8 +16,6 @@ st.set_page_config(layout="wide", page_title="Travel History Visualization")
 @st.cache_data(ttl=0)
 def load_travel_data():
     data_file = Path("frontend/data/travel_history.json")
-    st.write(f"Looking for file at: {data_file.absolute()}")
-
     if not data_file.exists():
         st.error(f"File not found at {data_file.absolute()}")
         return pd.DataFrame()
@@ -25,14 +23,12 @@ def load_travel_data():
     with open(data_file) as f:
         data = json.load(f)
 
-    # Create DataFrame and ensure new columns exist
     df = pd.DataFrame(data)
     if "date_visited" not in df.columns:
         df["date_visited"] = None
     if "photo_url" not in df.columns:
         df["photo_url"] = None
 
-    st.write(f"Loaded data: {data[:2]}")
     return df
 
 
@@ -281,7 +277,6 @@ def chat_interface(df):
 
 def main():
     if st.button("🔄 Refresh Data"):
-        st.write("Cache cleared!")
         st.cache_data.clear()
         st.rerun()
 
@@ -289,13 +284,34 @@ def main():
 
     # Load data
     df = load_travel_data()
-    st.write(f"DataFrame shape: {df.shape}")
 
     if df.empty:
         st.warning("No travel data found!")
         return
 
-    # Create statistics
+    # Calculate badge based on visited places
+    yes_count = len(df[df["response"] == "yes"])
+    badge_info = calculate_badge(yes_count)
+
+    # Display badge section
+    st.subheader(badge_info["title"])
+
+    # Display badge image with correct path
+    badge_images = {
+        "Novice Explorer": "frontend/resources/badges/novice_explorer.png",
+        "Adventurer": "frontend/resources/badges/adventurer.png",
+        "World Master": "frontend/resources/badges/world_master.png",
+    }
+
+    badge_image_path = badge_images.get(badge_info["title"])
+    if badge_image_path and Path(badge_image_path).exists():
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.image(badge_image_path, width=200)
+
+    st.info(f"🌟 {badge_info['description']}")
+
+    # Show key statistics
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric("✈️ Places Visited", len(df[df["response"] == "yes"]))
@@ -415,6 +431,29 @@ def main():
 
     with tab4:
         chat_interface(df)  # New function for the chat interface
+
+
+def calculate_badge(yes_count):
+    badges = {
+        (0, 4): {
+            "title": "Novice Explorer",
+            "description": "You're just beginning your journey! Keep exploring!",
+        },
+        (5, 7): {
+            "title": "Adventurer",
+            "description": "You're getting the hang of traveling! More adventures await!",
+        },
+        (8, float("inf")): {
+            "title": "World Master",
+            "description": "You're a true citizen of the world! Incredible journey!",
+        },
+    }
+
+    for (min_count, max_count), badge in badges.items():
+        if min_count <= yes_count <= max_count:
+            return badge
+
+    return badges[(0, 4)]  # Default badge
 
 
 if __name__ == "__main__":
