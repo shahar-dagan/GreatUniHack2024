@@ -86,5 +86,346 @@
         ],
         "response": "yes",
         "timestamp": "2024-11-09T18:24:24.837498"
+    },
+    {
+        "destination_name": "Petra",
+        "city": "Wadi Musa",
+        "country": "Jordan",
+        "coordinates": [
+            30.3285,
+            35.4444
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:14:06.481236"
+    },
+    {
+        "destination_name": "Hagia Sophia",
+        "city": "Istanbul",
+        "country": "Turkey",
+        "coordinates": [
+            41.0086,
+            28.9802
+        ],
+        "response": "no",
+        "timestamp": "2024-11-09T19:14:12.439490"
+    },
+    {
+        "destination_name": "Hagia Sophia",
+        "city": "Istanbul",
+        "country": "Turkey",
+        "coordinates": [
+            41.0086,
+            28.9802
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:14:54.801363"
+    },
+    {
+        "destination_name": "Colosseum",
+        "city": "Rome",
+        "country": "Italy",
+        "coordinates": [
+            41.8902,
+            12.4922
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:14:55.906541"
+    },
+    {
+        "destination_name": "Taj Mahal",
+        "city": "Agra",
+        "country": "India",
+        "coordinates": [
+            27.1751,
+            78.0421
+        ],
+        "response": "no",
+        "timestamp": "2024-11-09T19:18:33.634197"
+    },
+    {
+        "destination_name": "Louvre Museum",
+        "city": "Paris",
+        "country": "France",
+        "coordinates": [
+            48.8606,
+            2.3376
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:18:35.600280"
+    },
+    {
+        "destination_name": "Angkor Wat",
+        "city": "Siem Reap",
+        "country": "Cambodia",
+        "coordinates": [
+            13.4125,
+            103.8669
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:18:36.699999"
+    },
+    {
+        "destination_name": "Colosseum",
+        "city": "Rome",
+        "country": "Italy",
+        "coordinates": [
+            41.8902,
+            12.4922
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:18:37.795867"
+    },
+    {
+        "destination_name": "Santorini",
+        "city": "Santorini",
+        "country": "Greece",
+        "coordinates": [
+            36.3932,
+            25.4615
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:18:45.745221"
+    },
+    {
+        "destination_name": "Dubai Mall",
+        "city": "Dubai",
+        "country": "UAE",
+        "coordinates": [
+            25.1972,
+            55.2794
+        ],
+        "response": "no",
+        "timestamp": "2024-11-09T19:41:22.146684"
+    },
+    {
+        "destination_name": "Sydney Opera House",
+        "city": "Sydney",
+        "country": "Australia",
+        "coordinates": [
+            -33.8568,
+            151.2153
+        ],
+        "response": "bucket_list",
+        "timestamp": "2024-11-09T19:41:27.561173"
+    },
+    {
+        "destination_name": "Sagrada Familia",
+        "city": "Barcelona",
+        "country": "Spain",
+        "coordinates": [
+            41.4036,
+            2.1744
+        ],
+        "response": "bucket_list",
+        "timestamp": "2024-11-09T19:41:34.261062"
+    },
+    {
+        "destination_name": "Eiffel Tower",
+        "city": "Paris",
+        "country": "France",
+        "coordinates": [
+            48.8584,
+            2.2945
+        ],
+        "response": "bucket_list",
+        "timestamp": "2024-11-09T19:41:35.319633"
+    },
+    {
+        "destination_name": "Pike Place Market",
+        "city": "Seattle",
+        "country": "USA",
+        "coordinates": [
+            47.6097,
+            -122.3426
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:41:43.133440"
+    },
+    {
+        "destination_name": "Pyramids of Giza",
+        "city": "Giza",
+        "country": "Egypt",
+        "coordinates": [
+            29.9792,
+            31.1342
+        ],
+        "response": "no",
+        "timestamp": "2024-11-09T19:41:50.062306"
+    },
+    {
+        "destination_name": "Pampas de la Sierra",
+        "city": "Argentina",
+        "country": "Argentina",
+        "coordinates": [
+            -30.9371,
+            -61.3631
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:42:07.070441"
+    },
+    {
+        "destination_name": "Cinque Terre",
+        "city": "Liguria",
+        "country": "Italy",
+        "coordinates": [
+            44.1134,
+            9.671
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:42:08.104207"
+    },
+    {
+        "destination_name": "Pyramids of Giza",
+        "city": "Giza",
+        "country": "Egypt",
+        "coordinates": [
+            29.9792,
+            31.1342
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:42:13.639195"
+    },
+    {
+        "destination_name": "Taj Mahal",
+        "city": "Agra",
+        "country": "India",
+        "coordinates": [
+            27.1751,
+            78.0421
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:42:21.086841"
+    },
+    {
+        "destination_name": "Great Wall of China",
+        "city": "Beijing",
+        "country": "China",
+        "coordinates": [
+            40.4319,
+            116.5704
+        ],
+        "response": "bucket_list",
+        "timestamp": "2024-11-09T19:42:27.878530"
+    },
+    {
+        "destination_name": "Angkor Wat",
+        "city": "Siem Reap",
+        "country": "Cambodia",
+        "coordinates": [
+            13.4125,
+            103.8667
+        ],
+        "response": "no",
+        "timestamp": "2024-11-09T19:42:33.952616"
+    },
+    {
+        "destination_name": "Santorini",
+        "city": "Santorini",
+        "country": "Greece",
+        "coordinates": [
+            36.3932,
+            25.4615
+        ],
+        "response": "bucket_list",
+        "timestamp": "2024-11-09T19:42:39.989140"
+    },
+    {
+        "destination_name": "Christ the Redeemer",
+        "city": "Rio de Janeiro",
+        "country": "Brazil",
+        "coordinates": [
+            -22.9519,
+            -43.2105
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:42:46.265406"
+    },
+    {
+        "destination_name": "Taj Mahal",
+        "city": "Agra",
+        "country": "India",
+        "coordinates": [
+            27.1751,
+            78.0421
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:42:47.356501"
+    },
+    {
+        "destination_name": "Mount Zion",
+        "city": "Jerusalem",
+        "country": "Israel",
+        "coordinates": [
+            31.7767,
+            35.2327
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:42:52.659144"
+    },
+    {
+        "destination_name": "Mount Fuji",
+        "city": "Fujinomiya",
+        "country": "Japan",
+        "coordinates": [
+            35.3606,
+            138.7274
+        ],
+        "response": "no",
+        "timestamp": "2024-11-09T19:42:57.560883"
+    },
+    {
+        "destination_name": "Kilimanjaro",
+        "city": "Kilimanjaro",
+        "country": "Tanzania",
+        "coordinates": [
+            -3.0674,
+            37.3556
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:43:02.604166"
+    },
+    {
+        "destination_name": "Louvre Museum",
+        "city": "Paris",
+        "country": "France",
+        "coordinates": [
+            48.8606,
+            2.3376
+        ],
+        "response": "bucket_list",
+        "timestamp": "2024-11-09T19:43:11.833723"
+    },
+    {
+        "destination_name": "Pampas de la Sierra",
+        "city": "Argentina",
+        "country": "Argentina",
+        "coordinates": [
+            -30.9371,
+            -61.3631
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:43:33.311210"
+    },
+    {
+        "destination_name": "Sydney Opera House",
+        "city": "Sydney",
+        "country": "Australia",
+        "coordinates": [
+            -33.8568,
+            151.2153
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:43:38.053811"
+    },
+    {
+        "destination_name": "Burj Al Arab",
+        "city": "Dubai",
+        "country": "UAE",
+        "coordinates": [
+            25.1413,
+            55.1853
+        ],
+        "response": "yes",
+        "timestamp": "2024-11-09T19:43:39.082812"
     }
 ]
