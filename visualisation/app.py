@@ -543,6 +543,59 @@ def get_flight_info(departure_city, arrival_city):
         return {"formatted_message": f"Error fetching flight data: {str(e)}"}
 
 
+def data_dashboard(df):
+    st.header("📊 Travel Data Overview")
+
+    # Top metrics
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("✈️ Destinations Visited", len(df[df["response"] == "yes"]))
+
+    with col2:
+        st.metric(
+            "🌍 Countries Explored",
+            len(df[df["response"] == "yes"]["country"].unique()),
+        )
+
+    with col3:
+        st.metric(
+            "🎯 Bucket List Items", len(df[df["response"] == "bucket_list"])
+        )
+
+    st.markdown("---")
+
+    # Countries visited chart
+    st.subheader("🗺️ Destinations by Country")
+    country_counts = df[df["response"] == "yes"]["country"].value_counts()
+    st.bar_chart(country_counts)
+
+    # Visit status distribution
+    st.subheader("📊 Travel Status Distribution")
+    status_counts = df["response"].value_counts()
+    st.bar_chart(status_counts)
+
+    # Data table with search
+    st.markdown("---")
+    st.subheader("🔍 Explore Your Travel Data")
+
+    search = st.text_input("Search destinations, cities, or countries...")
+
+    filtered_df = df
+    if search:
+        filtered_df = df[
+            df["destination_name"].str.contains(search, case=False, na=False)
+            | df["city"].str.contains(search, case=False, na=False)
+            | df["country"].str.contains(search, case=False, na=False)
+        ]
+
+    st.dataframe(
+        filtered_df[["destination_name", "city", "country", "response"]],
+        use_container_width=True,
+        height=400,
+    )
+
+
 def main():
     if st.button("🔄 Refresh Data"):
         st.cache_data.clear()
@@ -572,7 +625,7 @@ def main():
     st.pydeck_chart(create_map(df))
 
     # Create tabs including the new Badge tab
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
         [
             "🏆 Badge",
             "✈️ Visited",
@@ -581,6 +634,7 @@ def main():
             "📅 Timeline",
             "💬 Chat Analysis",
             "📚 Library",
+            "📊 Data Overview",
         ]
     )
 
@@ -774,6 +828,9 @@ def main():
                 if image_url:
                     st.image(image_url, caption=f"You at {full_destination}")
                     st.markdown(f"[Download Image]({image_url})")
+
+    with tab8:
+        data_dashboard(df)
 
 
 def calculate_badge(yes_count):
