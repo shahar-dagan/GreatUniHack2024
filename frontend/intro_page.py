@@ -147,7 +147,8 @@ class IntroScreen(QWidget):
             profile_pic_path = os.path.join(self.profile_pics_dir, filename)
             cv2.imwrite(profile_pic_path, frame)
 
-            self.game_window = QuestionWindow(player_name, profile_pic_path)
+            self.game_window = QuestionWindow()
+            self.game_window.set_player_info(player_name, profile_pic_path)
             self.game_window.show()
             self.close()
 

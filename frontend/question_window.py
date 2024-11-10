@@ -472,6 +472,10 @@ class QuestionWindow(QWidget):
         # Close the question window
         self.close()
 
+    def set_player_info(self, player_name, profile_pic_path):
+        self.player_name = player_name
+        self.profile_pic_path = profile_pic_path
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
