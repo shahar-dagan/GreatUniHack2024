@@ -192,37 +192,90 @@ def save_travel_data(df):
 
 
 def get_weather_info(city):
-    """Get weather information for a city"""
-    api_key = os.getenv("WEATHER_API_KEY")  # OpenWeatherMap API key
-    base_url = "http://api.openweathermap.org/data/2.5/weather"
+    """Get weather information for a city using WeatherAPI.com"""
+    api_key = os.getenv("WEATHER_API_KEY")
 
-    params = {"q": city, "appid": api_key, "units": "metric"}  # For Celsius
+    # First, clean up the city input
+    city = city.lower()
+    city = (
+        city.replace("what's", "")
+        .replace("the", "")
+        .replace("weather", "")
+        .replace("in", "")
+        .replace("?", "")
+        .strip()
+    )
+
+    if not city:
+        return {
+            "error": True,
+            "formatted_message": "⚠️ I couldn't determine which city you're asking about. Please try again with a city name.",
+        }
+
+    if not api_key:
+        return {
+            "error": True,
+            "formatted_message": "⚠️ Weather service is currently unavailable. Please try again later.",
+        }
+
+    base_url = f"http://api.weatherapi.com/v1/current.json"
+
+    params = {"key": api_key, "q": city, "aqi": "no"}
 
     try:
         response = requests.get(base_url, params=params)
+
         if response.status_code == 200:
             data = response.json()
-
-            # Format weather information
             weather_info = {
-                "temp": round(data["main"]["temp"]),
-                "feels_like": round(data["main"]["feels_like"]),
-                "description": data["weather"][0]["description"],
-                "humidity": data["main"]["humidity"],
-                "wind_speed": round(data["wind"]["speed"]),
+                "temp_c": data["current"]["temp_c"],
+                "condition": data["current"]["condition"]["text"],
+                "humidity": data["current"]["humidity"],
+                "wind_kph": data["current"]["wind_kph"],
+                "feels_like": data["current"]["feelslike_c"],
+                "location": data["location"]["name"],
+                "country": data["location"]["country"],
             }
 
-            message = f"""**Current Weather in {city.title()}:**
-• Temperature: {weather_info['temp']}°C
+            message = f"""**Current Weather in {weather_info['location']}, {weather_info['country']}:**
+
+• Temperature: {weather_info['temp_c']}°C
+
 • Feels like: {weather_info['feels_like']}°C
-• Conditions: {weather_info['description'].title()}
+
+• Conditions: {weather_info['condition']}
+
 • Humidity: {weather_info['humidity']}%
-• Wind Speed: {weather_info['wind_speed']} m/s
+
+• Wind Speed: {weather_info['wind_kph']} km/h
 """
-            return {"formatted_message": message}
+            return {"error": False, "formatted_message": message}
+
+        elif response.status_code == 401:
+            return {
+                "error": True,
+                "formatted_message": "⚠️ Weather service authentication failed. Please try again later.",
+            }
+        elif response.status_code == 404:
+            return {
+                "error": True,
+                "formatted_message": f"⚠️ Couldn't find weather data for '{city}'. Please check the city name and try again.",
+            }
+        else:
+            return {
+                "error": True,
+                "formatted_message": f"⚠️ Weather service error (Status: {response.status_code}). Please try again later.",
+            }
+
+    except requests.exceptions.ConnectionError:
+        return {
+            "error": True,
+            "formatted_message": "⚠️ Couldn't connect to the weather service. Please check your internet connection.",
+        }
     except Exception as e:
         return {
-            "formatted_message": f"Sorry, couldn't fetch weather data for {city}"
+            "error": True,
+            "formatted_message": f"⚠️ An error occurred while fetching weather data: {str(e)}",
         }
 
 
@@ -324,29 +377,23 @@ def chat_interface(df):
 
                 # If it's a weather query, add weather data
                 if is_weather_query:
-                    city = (
-                        prompt.lower()
-                        .replace("weather", "")
-                        .replace("in", "")
-                        .strip()
-                    )
+                    city = prompt.lower()
                     weather_data = get_weather_info(city)
-                    if weather_data and weather_data.get("formatted_message"):
-                        with chat_container:
-                            with st.chat_message("assistant"):
+
+                    with chat_container:
+                        with st.chat_message("assistant"):
+                            if weather_data.get("error", False):
+                                st.error(weather_data["formatted_message"])
+                            else:
                                 st.markdown(weather_data["formatted_message"])
 
-                        st.session_state["messages"].extend(
-                            [
-                                {"role": "assistant", "content": full_response},
-                                {
-                                    "role": "assistant",
-                                    "content": weather_data[
-                                        "formatted_message"
-                                    ],
-                                },
-                            ]
-                        )
+                    # Add to chat history
+                    st.session_state["messages"].append(
+                        {
+                            "role": "assistant",
+                            "content": weather_data["formatted_message"],
+                        }
+                    )
                 else:
                     # Just add the AI response for travel analysis
                     st.session_state["messages"].append(
