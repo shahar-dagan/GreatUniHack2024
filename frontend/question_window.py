@@ -170,7 +170,25 @@ class QuestionWindow(QWidget):
         buttons_layout.addWidget(self.no_button)
         buttons_layout.addWidget(self.bucket_list_button)
 
-        # Add elements to main layout
+        # Add loading indicator
+        self.loading_label = QLabel("Loading map...")
+        self.loading_label.setAlignment(Qt.AlignCenter)
+        self.loading_label.setStyleSheet(
+            """
+            QLabel {
+                color: gray;
+                font-size: 16px;
+                background-color: white;
+                padding: 10px;
+            }
+        """
+        )
+
+        # Hide loading label when map is ready
+        self.map_view.loadFinished.connect(lambda: self.loading_label.hide())
+
+        # Add to layout
+        main_layout.addWidget(self.loading_label)
         main_layout.addWidget(self.map_view)
         main_layout.addWidget(self.question_label)
         main_layout.addLayout(buttons_layout)  # Add the buttons layout
@@ -211,6 +229,84 @@ class QuestionWindow(QWidget):
         # Set window background color
         self.setStyleSheet("background-color: white;")
 
+        # Pre-load the map with a default view
+        self.initialize_map()
+
+    def initialize_map(self):
+        """Initialize map with a default world view"""
+        html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                #map {{
+                    height: 100%;
+                    width: 100%;
+                    border-radius: 8px;
+                }}
+                html, body {{
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }}
+            </style>
+            <script>
+                let map;
+                let marker;
+                
+                async function initMap() {{
+                    try {{
+                        const {{ Map }} = await google.maps.importLibrary("maps");
+                        const {{ AdvancedMarkerElement }} = await google.maps.importLibrary("marker");
+                        
+                        map = new Map(document.getElementById("map"), {{
+                            zoom: 2,
+                            center: {{ lat: 20, lng: 0 }},
+                            mapId: "DEMO_MAP_ID",
+                            // Add performance optimizations
+                            disableDefaultUI: true,
+                            gestureHandling: 'none',
+                            zoomControl: false,
+                        }});
+                        
+                        // Create marker once and reuse it
+                        marker = new AdvancedMarkerElement({{
+                            map: map,
+                            position: {{ lat: 20, lng: 0 }},
+                        }});
+                        
+                        // Make marker and map globally accessible
+                        window.gameMap = map;
+                        window.gameMarker = marker;
+                        
+                    }} catch (error) {{
+                        console.error("Error loading map:", error);
+                    }}
+                }}
+            </script>
+            <script async
+                src="https://maps.googleapis.com/maps/api/js?key={API_KEY}&callback=initMap">
+            </script>
+        </head>
+        <body>
+            <div id="map"></div>
+        </body>
+        </html>
+        """
+        self.map_view.setHtml(html)
+
+    def update_map(self, coordinates):
+        """Update existing map instead of reloading"""
+        update_script = f"""
+        if (window.gameMap && window.gameMarker) {{
+            const newPos = {{ lat: {coordinates[0]}, lng: {coordinates[1]} }};
+            window.gameMarker.position = newPos;
+            window.gameMap.panTo(newPos);
+            window.gameMap.setZoom(12);
+        }}
+        """
+        self.map_view.page().runJavaScript(update_script)
+
     def load_new_question(self):
         print("\nLoading new question...")
 
@@ -230,62 +326,6 @@ class QuestionWindow(QWidget):
         self.update_map(coordinates)
         self.is_processing = True
         print("Question loaded and UI updated")
-
-    def update_map(self, coordinates):
-        html = f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-                #map {{
-                    height: 100%;
-                    width: 100%;
-                    border-radius: 8px;
-                }}
-                html, body {{
-                    height: 100%;
-                    margin: 0;
-                    padding: 0;
-                }}
-            </style>
-            <script>
-                let map;
-                
-                async function initMap() {{
-                    try {{
-                        const {{ Map }} = await google.maps.importLibrary("maps");
-                        const {{ AdvancedMarkerElement }} = await google.maps.importLibrary("marker");
-                        
-                        const location = {{ lat: {coordinates[0]}, lng: {coordinates[1]} }};
-                        
-                        map = new Map(document.getElementById("map"), {{
-                            zoom: 12,
-                            center: location,
-                            mapId: "DEMO_MAP_ID",
-                        }});
-                        
-                        const marker = new AdvancedMarkerElement({{
-                            map: map,
-                            position: location,
-                        }});
-                        
-                    }} catch (error) {{
-                        console.error("Error loading map:", error);
-                        document.getElementById("map").innerHTML = 
-                            "Error loading map. Please try again later.";
-                    }}
-                }}
-            </script>
-            <script async
-                src="https://maps.googleapis.com/maps/api/js?key={API_KEY}&callback=initMap">
-            </script>
-        </head>
-        <body>
-            <div id="map"></div>
-        </body>
-        </html>
-        """
-        self.map_view.setHtml(html)
 
     def update_frame(self):
         ret, frame = self.cap.read()
