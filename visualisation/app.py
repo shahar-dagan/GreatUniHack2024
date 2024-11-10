@@ -231,49 +231,43 @@ def chat_interface(df):
         countries = df["country"].unique()
 
         travel_context = f"""
-        You are a travel assistant analyzing travel history data. Here's the analysis:
+        Provide brief, direct answers about this travel data. Use bullet points when listing multiple items.
 
-        Country Frequencies (total destinations per country):
-        {country_counts}
+        Key Data:
+        • Visited destinations: {visited_count}
+        • Bucket list items: {bucket_count}
+        • Total countries: {len(countries)}
 
-        Visited Countries (number of visited places per country):
-        {visited_countries}
+        Visited Countries: {visited_countries}
+        Bucket List Countries: {bucket_countries}
 
-        Bucket List Countries (number of bucket list places per country):
-        {bucket_countries}
-
-        Total Statistics:
-        - Visited places: {visited_count}
-        - Bucket list places: {bucket_count}
-        - Total countries: {len(countries)}
-
-        Please provide detailed analysis based on this data.
+        Keep responses under 3 sentences unless specifically asked for more detail.
+        Focus on facts and numbers.
         """
 
         # Create OpenAI client and generate response
         client = OpenAI(api_key=api_key)
 
         # Prepare the assistant's response
+        messages = [
+            {"role": "system", "content": travel_context},
+            {"role": "user", "content": prompt},
+        ]
+
+        # Generate OpenAI response
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=messages,
+            stream=True,
+            temperature=0.5,  # Reduced temperature for more focused responses
+            max_tokens=250,  # Reduced max tokens for brevity
+        )
+
+        # Stream the response
         with chat_container:
             with st.chat_message("assistant"):
-                message_placeholder = st.empty()
+                message_placeholder = st.empty()  # Define the placeholder here
                 full_response = ""
-
-                messages = [
-                    {"role": "system", "content": travel_context},
-                    {"role": "user", "content": prompt},
-                ]
-
-                # Generate OpenAI response
-                response = client.chat.completions.create(
-                    model="gpt-4",
-                    messages=messages,
-                    stream=True,
-                    temperature=0.7,
-                    max_tokens=500,
-                )
-
-                # Stream the response
                 for chunk in response:
                     if chunk.choices[0].delta.content is not None:
                         full_response += chunk.choices[0].delta.content
