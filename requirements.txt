@@ -10,3 +10,4 @@ pydantic
 pydantic-settings
 pydantic-core
 pydantic-settings
+git+https://github.com/giswqs/streamlit-timeline

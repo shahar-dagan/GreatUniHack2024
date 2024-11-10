@@ -326,8 +326,14 @@ def main():
     st.pydeck_chart(create_map(df))
 
     # Create tabs for detailed views
-    tab1, tab2, tab3, tab4 = st.tabs(
-        ["✈️ Visited", "🎯 Bucket List", "❌ Not Visited", "💬 Chat Analysis"]
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(
+        [
+            "✈️ Visited",
+            "🎯 Bucket List",
+            "❌ Not Visited",
+            "📅 Timeline",
+            "💬 Chat Analysis",
+        ]
     )
 
     with tab1:
@@ -430,7 +436,39 @@ def main():
             st.info("No 'not visited' places recorded!")
 
     with tab4:
-        chat_interface(df)  # New function for the chat interface
+        visited_timeline = df[
+            (df["response"] == "yes") & (df["date_visited"].notna())
+        ].copy()
+
+        if not visited_timeline.empty:
+            # Convert date_visited to datetime
+            visited_timeline["date_visited"] = pd.to_datetime(
+                visited_timeline["date_visited"]
+            )
+            # Sort by date visited
+            visited_timeline = visited_timeline.sort_values("date_visited")
+
+            # Create timeline using streamlit
+            st.header("🗓️ Travel Timeline")
+
+            for _, row in visited_timeline.iterrows():
+                with st.container():
+                    col1, col2 = st.columns([1, 4])
+                    with col1:
+                        st.write(row["date_visited"].strftime("%B %Y"))
+                    with col2:
+                        location_text = f"**{row['destination_name']}** - {row['city']}, {row['country']}"
+                        if pd.notna(row["photo_url"]):
+                            location_text += f" [📸]({row['photo_url']})"
+                        st.markdown(location_text)
+                st.divider()
+        else:
+            st.info(
+                "No dated visits to display. Add dates to your visited locations to see them on the timeline!"
+            )
+
+    with tab5:
+        chat_interface(df)
 
 
 def calculate_badge(yes_count):
