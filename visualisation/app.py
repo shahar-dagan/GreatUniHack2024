@@ -193,19 +193,26 @@ def chat_interface(df):
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    # Display chat history
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+    # Create a container for the chat messages
+    chat_container = st.container()
 
-    # Chat input
-    if prompt := st.chat_input("Ask about your travel history..."):
+    # Place the input box below the chat container
+    prompt = st.chat_input("Ask about your travel history...")
+
+    # Display chat history in the container
+    with chat_container:
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+
+    if prompt:
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
 
-        # Display user message
-        with st.chat_message("user"):
-            st.markdown(prompt)
+        # Display user message in the container
+        with chat_container:
+            with st.chat_message("user"):
+                st.markdown(prompt)
 
         # Create a summarized version of the data
         country_counts = df["country"].value_counts().to_dict()
@@ -247,30 +254,31 @@ def chat_interface(df):
         client = OpenAI(api_key=api_key)
 
         # Prepare the assistant's response
-        with st.chat_message("assistant"):
-            message_placeholder = st.empty()
-            full_response = ""
+        with chat_container:
+            with st.chat_message("assistant"):
+                message_placeholder = st.empty()
+                full_response = ""
 
-            messages = [
-                {"role": "system", "content": travel_context},
-                {"role": "user", "content": prompt},
-            ]
+                messages = [
+                    {"role": "system", "content": travel_context},
+                    {"role": "user", "content": prompt},
+                ]
 
-            # Generate OpenAI response
-            response = client.chat.completions.create(
-                model="gpt-4",
-                messages=messages,
-                stream=True,
-                temperature=0.7,
-                max_tokens=500,
-            )
+                # Generate OpenAI response
+                response = client.chat.completions.create(
+                    model="gpt-4",
+                    messages=messages,
+                    stream=True,
+                    temperature=0.7,
+                    max_tokens=500,
+                )
 
-            # Stream the response
-            for chunk in response:
-                if chunk.choices[0].delta.content is not None:
-                    full_response += chunk.choices[0].delta.content
-                message_placeholder.markdown(full_response + "▌")
-            message_placeholder.markdown(full_response)
+                # Stream the response
+                for chunk in response:
+                    if chunk.choices[0].delta.content is not None:
+                        full_response += chunk.choices[0].delta.content
+                    message_placeholder.markdown(full_response + "▌")
+                message_placeholder.markdown(full_response)
 
         # Add assistant response to chat history
         st.session_state.messages.append(
