@@ -191,21 +191,88 @@ def save_travel_data(df):
         json.dump(data, f, indent=2)
 
 
+def get_weather_info(city):
+    """Get weather information for a city"""
+    api_key = os.getenv("WEATHER_API_KEY")  # OpenWeatherMap API key
+    base_url = "http://api.openweathermap.org/data/2.5/weather"
+
+    params = {"q": city, "appid": api_key, "units": "metric"}  # For Celsius
+
+    try:
+        response = requests.get(base_url, params=params)
+        if response.status_code == 200:
+            data = response.json()
+
+            # Format weather information
+            weather_info = {
+                "temp": round(data["main"]["temp"]),
+                "feels_like": round(data["main"]["feels_like"]),
+                "description": data["weather"][0]["description"],
+                "humidity": data["main"]["humidity"],
+                "wind_speed": round(data["wind"]["speed"]),
+            }
+
+            message = f"""**Current Weather in {city.title()}:**
+• Temperature: {weather_info['temp']}°C
+• Feels like: {weather_info['feels_like']}°C
+• Conditions: {weather_info['description'].title()}
+• Humidity: {weather_info['humidity']}%
+• Wind Speed: {weather_info['wind_speed']} m/s
+"""
+            return {"formatted_message": message}
+    except Exception as e:
+        return {
+            "formatted_message": f"Sorry, couldn't fetch weather data for {city}"
+        }
+
+
 def chat_interface(df):
     st.header("💬 Chat with Your Travel Data")
 
-    # Check if OpenAI API key is set
-    if not os.getenv("OPENAI_API_KEY"):
-        st.error("Please set your OpenAI API key in the environment variables")
-        return
+    # Add brief instructions with proper line spacing
+    with st.expander("ℹ️ What can you ask?"):
+        st.markdown(
+            """
+        **Travel History Questions:**
+        
+        • "How many countries have I visited?"
+        
+        • "Show me my bucket list"
+        
+        • "Which cities have I been to?"
+        
+        **Weather Queries:**
+        
+        • "What's the weather in Paris?"
+        
+        • "Show me weather in Tokyo"
+        
+        • "Current weather in London"
+        """
+        )
 
     if "messages" not in st.session_state:
         st.session_state["messages"] = []
 
+    # Define travel context
+    travel_context = f"""
+    You are analyzing travel data with:
+    • {len(df[df['response'] == 'yes'])} visited destinations
+    • {len(df[df['response'] == 'bucket_list'])} bucket list items
+    • {len(df[df['response'] == 'yes']['country'].unique())} countries visited
+
+    For travel questions: Be brief and specific with numbers.
+    For weather queries: Say "Let me check the current weather in [city]"
+
+    Keep responses under 3 sentences unless asked for more detail.
+    """
+
+    # Create containers for chat and thinking animation
     chat_container = st.container()
-    prompt = st.chat_input(
-        "Ask about your travel history or search for flights..."
-    )
+    thinking_container = st.empty()  # For the thinking animation
+
+    # Place the input box below the chat container
+    prompt = st.chat_input("Ask about your travel history or check weather...")
 
     # Display chat history
     with chat_container:
@@ -220,63 +287,21 @@ def chat_interface(df):
             with st.chat_message("user"):
                 st.markdown(prompt)
 
-        # Determine if this is a flight query or a travel history query
-        if any(
-            word in prompt.lower() for word in ["flight", "fly", "travel from"]
-        ):
-            # FLIGHT SEARCH MODE
-            cities = extract_cities(prompt.lower())
-            if cities:
-                departure, arrival = cities
+        # Check if this is a weather query
+        is_weather_query = any(
+            word in prompt.lower()
+            for word in ["weather", "temperature", "forecast"]
+        )
 
-                # First response from AI
-                initial_response = f"I'll check available flights from {departure.title()} to {arrival.title()}. Let me fetch the real-time schedule..."
+        messages = [
+            {"role": "system", "content": travel_context},
+            {"role": "user", "content": prompt},
+        ]
 
-                with chat_container:
-                    with st.chat_message("assistant"):
-                        st.markdown(initial_response)
-                st.session_state["messages"].append(
-                    {"role": "assistant", "content": initial_response}
-                )
-
-                # Fetch flight data
-                with st.spinner("Fetching flights..."):
-                    flight_data = get_flight_info(departure, arrival)
-                    if flight_data and flight_data.get("formatted_message"):
-                        with chat_container:
-                            with st.chat_message("assistant"):
-                                st.markdown(flight_data["formatted_message"])
-                        st.session_state["messages"].append(
-                            {
-                                "role": "assistant",
-                                "content": flight_data["formatted_message"],
-                            }
-                        )
-        else:
-            # TRAVEL HISTORY ANALYSIS MODE
-            try:
-                travel_context = f"""
-                You are analyzing travel data with the following information:
-                - Total destinations visited: {len(df[df['response'] == 'yes'])}
-                - Bucket list destinations: {len(df[df['response'] == 'bucket_list'])}
-                - Countries visited: {len(df[df['response'] == 'yes']['country'].unique())}
-
-                The data includes:
-                - Destination names
-                - Cities and countries
-                - Visit status (yes/no/bucket_list)
-                - Dates visited (when available)
-
-                Please provide concise, data-driven answers.
-                Use bullet points for lists.
-                Include specific numbers when relevant.
-                """
-
-                messages = [
-                    {"role": "system", "content": travel_context},
-                    {"role": "user", "content": prompt},
-                ]
-
+        # Show thinking animation while processing
+        with thinking_container:
+            with st.spinner("Thinking..."):
+                # Get AI response
                 with chat_container:
                     with st.chat_message("assistant"):
                         message_placeholder = st.empty()
@@ -297,24 +322,36 @@ def chat_interface(df):
                                 )
                         message_placeholder.markdown(full_response)
 
-                st.session_state["messages"].append(
-                    {"role": "assistant", "content": full_response}
-                )
+                # If it's a weather query, add weather data
+                if is_weather_query:
+                    city = (
+                        prompt.lower()
+                        .replace("weather", "")
+                        .replace("in", "")
+                        .strip()
+                    )
+                    weather_data = get_weather_info(city)
+                    if weather_data and weather_data.get("formatted_message"):
+                        with chat_container:
+                            with st.chat_message("assistant"):
+                                st.markdown(weather_data["formatted_message"])
 
-            except Exception as e:
-                st.error(f"Error generating response: {str(e)}")
-                logging.error(f"OpenAI API error: {str(e)}")
-
-
-def extract_cities(text):
-    """Helper function to extract departure and arrival cities"""
-    if "from" in text and "to" in text:
-        from_idx = text.find("from") + 4
-        to_idx = text.find("to") + 2
-        departure = text[from_idx : text.find("to")].strip()
-        arrival = text[to_idx:].strip()
-        return departure, arrival
-    return None
+                        st.session_state["messages"].extend(
+                            [
+                                {"role": "assistant", "content": full_response},
+                                {
+                                    "role": "assistant",
+                                    "content": weather_data[
+                                        "formatted_message"
+                                    ],
+                                },
+                            ]
+                        )
+                else:
+                    # Just add the AI response for travel analysis
+                    st.session_state["messages"].append(
+                        {"role": "assistant", "content": full_response}
+                    )
 
 
 def generate_travel_image(client, destination):
@@ -338,38 +375,47 @@ def generate_travel_image(client, destination):
 
 
 def get_flight_info(departure_city, arrival_city):
+    """Get flight information between two cities"""
     logger.debug(
         f"Starting flight info request for {departure_city} to {arrival_city}"
     )
 
-    # Common airport IATA codes
+    # Clean up city names and remove quotes
+    departure_city = departure_city.strip().strip('"').lower()
+    arrival_city = arrival_city.strip().strip('"').lower()
+
+    # Comprehensive airport codes dictionary
     airport_codes = {
-        "paris": "CDG",
         "london": "LHR",
+        "paris": "CDG",
         "new york": "JFK",
         "tokyo": "HND",
         "dubai": "DXB",
+        "singapore": "SIN",
+        "hong kong": "HKG",
+        "frankfurt": "FRA",
+        "istanbul": "IST",
+        "amsterdam": "AMS",
     }
 
-    # Convert city names to IATA codes
-    dep_code = (
-        departure_city.upper()
-        if len(departure_city) == 3
-        else airport_codes.get(departure_city.lower(), departure_city)
-    )
-    arr_code = (
-        arrival_city.upper()
-        if len(arrival_city) == 3
-        else airport_codes.get(arrival_city.lower(), arrival_city)
-    )
+    # Get IATA codes
+    dep_code = airport_codes.get(departure_city, departure_city.upper())
+    arr_code = airport_codes.get(arrival_city, arrival_city.upper())
+
+    # Validate IATA codes (should be 3 letters)
+    if len(dep_code) != 3 or len(arr_code) != 3:
+        return {
+            "formatted_message": f"Sorry, I couldn't find valid airport codes for {departure_city} or {arrival_city}. "
+            f"Please try using major airports or IATA codes (e.g., LHR for London Heathrow)."
+        }
 
     api_key = os.getenv("AVIATION_STACK_KEY")
     base_url = "http://api.aviationstack.com/v1/flights"
 
     params = {
         "access_key": api_key,
-        "dep_iata": dep_code.upper(),
-        "arr_iata": arr_code.upper(),
+        "dep_iata": dep_code,
+        "arr_iata": arr_code,
         "limit": 5,
     }
 
