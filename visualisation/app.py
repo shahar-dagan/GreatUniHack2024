@@ -278,7 +278,7 @@ def chat_interface(df):
         )
 
 
-def generate_travel_image(client, destination, profile_image_base64):
+def generate_travel_image(client, destination):
     try:
         prompt = f"""Create a realistic travel photo of a person at {destination}. 
         Show them in a natural pose at a famous landmark or scenic viewpoint of {destination}. 
@@ -299,19 +299,6 @@ def generate_travel_image(client, destination, profile_image_base64):
 
 
 def main():
-    # Load the profile picture from assets
-    profile_image_path = Path(
-        "/Users/shahar/GreatUniHack2024/assets/profile_pictures/profile.jpg"
-    )
-
-    if not profile_image_path.exists():
-        st.error("Profile picture not found in assets folder!")
-        return
-
-    # Convert profile image to base64 once
-    with open(profile_image_path, "rb") as image_file:
-        profile_image_base64 = base64.b64encode(image_file.read()).decode()
-
     if st.button("🔄 Refresh Data"):
         st.cache_data.clear()
         st.rerun()
@@ -537,9 +524,7 @@ def main():
 
                 full_destination = f"{destination_details['destination_name']}, {destination_details['city']}, {destination_details['country']}"
 
-                image_url = generate_travel_image(
-                    client, full_destination, profile_image_base64
-                )
+                image_url = generate_travel_image(client, full_destination)
 
                 if image_url:
                     st.image(image_url, caption=f"You at {full_destination}")
