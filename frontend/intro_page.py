@@ -33,7 +33,7 @@ class IntroScreen(QWidget):
         layout = QVBoxLayout()
 
         # Welcome message
-        welcome_label = QLabel("Welcome to Travel Questions!")
+        welcome_label = QLabel("Welcome to Visual Traveller!")
         welcome_label.setAlignment(Qt.AlignCenter)
         welcome_label.setFont(QFont("Arial", 24, QFont.Bold))
         welcome_label.setStyleSheet("margin: 20px;")
