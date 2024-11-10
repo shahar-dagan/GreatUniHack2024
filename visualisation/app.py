@@ -7,6 +7,9 @@ from datetime import datetime
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+from PIL import Image
+import io
+import base64
 
 load_dotenv()
 
@@ -275,6 +278,26 @@ def chat_interface(df):
         )
 
 
+def generate_travel_image(client, destination):
+    try:
+        prompt = f"""Create a realistic travel photo of a person at {destination}. 
+        Show them in a natural pose at a famous landmark or scenic viewpoint of {destination}. 
+        Make sure the lighting and perspective look natural."""
+
+        response = client.images.generate(
+            model="dall-e-3",
+            prompt=prompt,
+            n=1,
+            size="1024x1024",
+            quality="standard",
+        )
+
+        return response.data[0].url
+    except Exception as e:
+        st.error(f"Error generating image: {str(e)}")
+        return None
+
+
 def main():
     if st.button("🔄 Refresh Data"):
         st.cache_data.clear()
@@ -304,7 +327,7 @@ def main():
     st.pydeck_chart(create_map(df))
 
     # Create tabs including the new Badge tab
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
         [
             "🏆 Badge",
             "✈️ Visited",
@@ -312,6 +335,7 @@ def main():
             "❌ Not Visited",
             "📅 Timeline",
             "💬 Chat Analysis",
+            "📚 Library",
         ]
     )
 
@@ -472,6 +496,39 @@ def main():
 
     with tab6:
         chat_interface(df)
+
+    with tab7:
+        st.header("🖼️ Travel Photo Library")
+
+        # Get bucket list destinations
+        bucket_list = df[df["response"] == "bucket_list"]
+
+        if bucket_list.empty:
+            st.info(
+                "Add some destinations to your bucket list to generate travel photos!"
+            )
+            return
+
+        # Create a dropdown to select destination
+        selected_destination = st.selectbox(
+            "Select a destination to generate a photo",
+            bucket_list["destination_name"].tolist(),
+        )
+
+        if st.button("Generate Travel Photo"):
+            with st.spinner("Generating your travel photo..."):
+                client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+                destination_details = bucket_list[
+                    bucket_list["destination_name"] == selected_destination
+                ].iloc[0]
+
+                full_destination = f"{destination_details['destination_name']}, {destination_details['city']}, {destination_details['country']}"
+
+                image_url = generate_travel_image(client, full_destination)
+
+                if image_url:
+                    st.image(image_url, caption=f"You at {full_destination}")
+                    st.markdown(f"[Download Image]({image_url})")
 
 
 def calculate_badge(yes_count):
