@@ -195,22 +195,43 @@ def get_weather_info(city):
     """Get weather information for a city using WeatherAPI.com"""
     api_key = os.getenv("WEATHER_API_KEY")
 
-    # First, clean up the city input
+    # Better city name extraction
     city = city.lower()
-    city = (
-        city.replace("what's", "")
-        .replace("the", "")
-        .replace("weather", "")
-        .replace("in", "")
-        .replace("?", "")
-        .strip()
-    )
+    # Remove common weather-related phrases
+    phrases_to_remove = [
+        "what's",
+        "whats",
+        "what is",
+        "the",
+        "weather",
+        "temperature",
+        "forecast",
+        "conditions",
+        "like",
+        "in",
+        "at",
+        "for",
+        "?",
+        ".",
+        "please",
+        "show",
+        "me",
+        "current",
+    ]
+
+    for phrase in phrases_to_remove:
+        city = city.replace(phrase, "")
+
+    # Clean up extra spaces and get final city name
+    city = city.strip()
 
     if not city:
         return {
             "error": True,
             "formatted_message": "⚠️ I couldn't determine which city you're asking about. Please try again with a city name.",
         }
+
+    logger.debug(f"Extracted city name: {city}")  # Add this for debugging
 
     if not api_key:
         return {
