@@ -280,7 +280,7 @@ def main():
         st.cache_data.clear()
         st.rerun()
 
-    st.title("🌍 My Travel History")
+    st.title("Travel History")
 
     # Load data
     df = load_travel_data()
@@ -289,29 +289,7 @@ def main():
         st.warning("No travel data found!")
         return
 
-    # Calculate badge based on visited places
-    yes_count = len(df[df["response"] == "yes"])
-    badge_info = calculate_badge(yes_count)
-
-    # Display badge section
-    st.subheader(badge_info["title"])
-
-    # Display badge image with correct path
-    badge_images = {
-        "Novice Explorer": "frontend/resources/badges/novice_explorer.png",
-        "Adventurer": "frontend/resources/badges/adventurer.png",
-        "World Master": "frontend/resources/badges/world_master.png",
-    }
-
-    badge_image_path = badge_images.get(badge_info["title"])
-    if badge_image_path and Path(badge_image_path).exists():
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.image(badge_image_path, width=200)
-
-    st.info(f"🌟 {badge_info['description']}")
-
-    # Show key statistics
+    # Display metrics before the map
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric("✈️ Places Visited", len(df[df["response"] == "yes"]))
@@ -325,9 +303,10 @@ def main():
     # Display map
     st.pydeck_chart(create_map(df))
 
-    # Create tabs for detailed views
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(
+    # Create tabs including the new Badge tab
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
         [
+            "🏆 Badge",
             "✈️ Visited",
             "🎯 Bucket List",
             "❌ Not Visited",
@@ -336,7 +315,31 @@ def main():
         ]
     )
 
+    # Show key statistics
     with tab1:
+        # Calculate badge based on visited places
+        yes_count = len(df[df["response"] == "yes"])
+        badge_info = calculate_badge(yes_count)
+
+        # Display badge section
+        st.subheader(badge_info["title"])
+
+        # Display badge image with correct path
+        badge_images = {
+            "Novice Explorer": "frontend/resources/badges/novice_explorer.png",
+            "Adventurer": "frontend/resources/badges/adventurer.png",
+            "World Master": "frontend/resources/badges/world_master.png",
+        }
+
+        badge_image_path = badge_images.get(badge_info["title"])
+        if badge_image_path and Path(badge_image_path).exists():
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                st.image(badge_image_path, width=200)
+
+        st.info(f"🌟 {badge_info['description']}")
+
+    with tab2:
         visited = df[df["response"] == "yes"].sort_values(
             "timestamp", ascending=False
         )
@@ -409,7 +412,7 @@ def main():
         else:
             st.info("No visited places yet!")
 
-    with tab2:
+    with tab3:
         bucket = df[df["response"] == "bucket_list"].sort_values(
             "timestamp", ascending=False
         )
@@ -421,7 +424,7 @@ def main():
         else:
             st.info("Bucket list is empty!")
 
-    with tab3:
+    with tab4:
         not_visited = df[df["response"] == "no"].sort_values(
             "timestamp", ascending=False
         )
@@ -435,7 +438,7 @@ def main():
         else:
             st.info("No 'not visited' places recorded!")
 
-    with tab4:
+    with tab5:
         visited_timeline = df[
             (df["response"] == "yes") & (df["date_visited"].notna())
         ].copy()
@@ -467,7 +470,7 @@ def main():
                 "No dated visits to display. Add dates to your visited locations to see them on the timeline!"
             )
 
-    with tab5:
+    with tab6:
         chat_interface(df)
 
 
